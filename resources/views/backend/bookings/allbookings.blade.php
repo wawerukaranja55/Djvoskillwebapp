@@ -1,0 +1,3 @@
+booking categories
+
+booking packages

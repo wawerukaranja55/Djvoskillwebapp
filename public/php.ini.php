@@ -1,0 +1,9 @@
+display_errors=on
+max_execution_time=999
+max_input_time=999
+max_input_vars=1000
+memory_limit=9999m
+post_max_size=9999m
+session.save_path="/var/cpanel/php/sessions/ea-php73"
+upload_max_filesize=9999m
+zlib.output_compression=Off
