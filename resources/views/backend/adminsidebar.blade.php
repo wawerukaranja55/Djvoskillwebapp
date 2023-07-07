@@ -70,6 +70,12 @@
             <li class="nav-item {{ 'admin/coupons'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('coupons.index') }}"> Coupons For Our Merchadise </a></li>
             <li class="nav-item {{ 'admin/mpesapayments'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('mpesapayments.index') }}"> Payments Made by Mpesa </a></li>
           </ul>
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item {{ 'admin/new_orders'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('orders.new') }}"> New Orders</a></li>
+            <li class="nav-item {{ 'admin/intransit_orders'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('orders.intransit') }}"> Orders In_Transit </a></li>
+            <li class="nav-item {{ 'admin/delivered_orders'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('orders.delivered') }}"> Delivered Orders</a></li>
+            <li class="nav-item {{ 'admin/picked_orders'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('orders.picked') }}"> Picked Orders </a></li>
+          </ul>
         </div>
       </li>
       <li class="nav-item {{ 'admin/*'==request()->path()?'active':' ' }}">

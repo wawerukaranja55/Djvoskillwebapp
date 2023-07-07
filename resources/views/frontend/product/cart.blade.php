@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-lg-12">
                   {{-- cart table   --}}
-                <div id="appendcartitems" style="border: 2px solid black">
+                <div id="appendcartitems">
                     @include('frontend.product.cartitems')
                 </div>
                 
@@ -50,50 +50,12 @@
                 url:'/updatecartitemquantity',
                 type:'post',
                 success:function(resp){
+                    console.log(resp);
                     $("#appendcartitems").html(resp.view);
                 },error:function(){
                     alert("error");
                 }
             })
-        });
-
-        $(document).ready(function(){
-           // apply customer coupon
-           $("#applycoupon").submit(function(){
-                var user=$(this).attr("couponuser");
-                
-                if(user==1){
-
-                }else{
-                    alert("Please Login To Apply Coupon");
-                    return false;
-                }
-                var code=$("#couponcode").val();
-                $.ajax({
-                    type:'post',
-                    data:{code:code},
-                    url:'/apply-coupon',
-                    success:function(resp){
-                        if(resp.message!=""){
-                            alert(resp.message);
-                        }
-                        $("#appendcartitems").html(resp.view);
-                        // if(resp.couponAmount>=0){
-                        //     $(".couponAmount").text(resp.couponAmount);
-                        // }else{
-                        //     $(".couponAmount").text("sh.0");
-                        // }
-                        $(".couponAmount").text(resp.couponAmount);
-                        // if(resp.grand_total>=0){
-                        //     $(".grand_total").text(resp.grand_total);
-                        // }
-                        $(".grand_total").text(resp.grand_total);
-                    },error:function(){
-                        alert("Error");
-                    }
-                })
-
-            }); 
         });
 
     </script>

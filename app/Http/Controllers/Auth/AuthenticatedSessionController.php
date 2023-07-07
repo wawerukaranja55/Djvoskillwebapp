@@ -23,7 +23,7 @@ class AuthenticatedSessionController extends Controller
     public function create()
     {
         $events=Events::latest()->take(4)->get();
-        dd($events);die();
+        // dd($events);die();
         return view('auth.login',compact('events'));
     }
 

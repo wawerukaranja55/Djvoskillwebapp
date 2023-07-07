@@ -63,7 +63,7 @@
                   </ul>
                   <ul class="navbar-nav navbar-nav-right">
                     @guest
-                    <li class="nav-item nav-profile dropdown">
+                    {{-- <li class="nav-item nav-profile dropdown">
                       <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
                         <span class="nav-profile-name">Login/Sign up</span>
                       </a>
@@ -71,7 +71,7 @@
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#LogInModal">Log in</a>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#RegistrationModal">Register</a>
                       </div>
-                    </li>
+                    </li> --}}
                     @else
                     <li class="nav-item nav-profile dropdown">
                       <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
@@ -91,10 +91,10 @@
                             Admin Dashboard
                           </a>
                         @endif
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form method="POST" action="{{ route('signout') }}">
                           @csrf
             
-                          <a class="dropdown-item" href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                          <a class="dropdown-item" href="route('signout')" onclick="event.preventDefault(); this.closest('form').submit();">
                             <i class="mdi mdi-logout text-primary"></i>Logout
                           </a>
                         </form>
@@ -107,7 +107,7 @@
                         <!-- Cart -->
                         <a href="{{ url('/mycart') }}" class="nav-link">
                           <i class="fas fa-shopping-cart"></i>
-                          <span class="number" style="background: white;">{{ $cartcount }}</span>
+                          <span class="number" id="cartcount" style="background: white;">{{ $cartcount }}</span>
                         </a>
                       </div>
                        <!-- Header Shop Links End -->

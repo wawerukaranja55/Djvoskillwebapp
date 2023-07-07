@@ -19,6 +19,7 @@ class CreateTownsTable extends Migration
             $table->string('town');
             $table->string('pickuppoint');
             $table->integer('shipping_charges');
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

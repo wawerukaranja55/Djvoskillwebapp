@@ -20,7 +20,7 @@ class AlterTableMerchadises extends Migration
             $table->string('meta_keywords')->after('meta_description');
             $table->string('fabric')->after('meta_keywords');
             $table->string('occasion')->after('fabric');
-            $table->string('merch_video')->after('merch_image');;
+            $table->string('merch_video')->after('merch_image');
         });
     }
 

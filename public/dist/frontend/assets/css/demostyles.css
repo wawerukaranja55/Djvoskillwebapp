@@ -351,3 +351,134 @@ p.checkout-coupon input[type="text"] {
   content: "\f00c";
 }
 
+/* login page */
+
+.user-area-style {
+	position: relative;
+	z-index: 1;
+  }
+  
+  .user-area-style .contact-form-action {
+	max-width: 600px;
+	border-bottom: none;
+	background-color: #ffffff;
+	padding: 30px;
+	margin: auto;
+	border: 1px solid #ebebeb;
+	-webkit-box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.05);
+			box-shadow: 0 0 20px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .user-area-style .contact-form-action .account-title {
+	margin-bottom: 30px;
+  }
+  
+  .user-area-style .contact-form-action .account-title h2 {
+	font-size: 30px;
+	position: relative;
+	line-height: 1;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #62bd5e;
+  }
+  
+  .user-area-style .contact-form-action form .form-condition {
+	margin-bottom: 20px;
+  }
+  
+  .user-area-style .contact-form-action form .form-condition .agree-label {
+	font-weight: 600;
+  }
+  
+  .user-area-style .contact-form-action form .form-condition .agree-label a {
+	color: #62bd5e;
+  }
+  
+  .user-area-style .contact-form-action form .form-group {
+	margin-bottom: 30px;
+  }
+  
+  .user-area-style .contact-form-action form .form-group label {
+	margin-bottom: 10px;
+  }
+  
+  .user-area-style .contact-form-action form .form-group .form-control {
+	background-color: #ffffff;
+  }
+  
+  .user-area-style .contact-form-action form .login-action {
+	margin-bottom: 30px;
+  }
+  
+  .user-area-style .contact-form-action form .login-action .log-rem {
+	display: inline-block;
+  }
+  
+  .user-area-style .contact-form-action form .login-action .log-rem label {
+	margin-bottom: 0;
+  }
+  
+  .user-area-style .contact-form-action form .login-action .forgot-login {
+	display: inline-block;
+	float: right;
+  }
+  
+  .user-area-style .contact-form-action form .right {
+	float: right;
+  }
+  
+  .user-area-style .contact-form-action p {
+	margin-top: 25px;
+	line-height: 1;
+  }
+  
+  .user-area-style .contact-form-action p a {
+	color: #1b1b1b;
+  }
+  
+  .user-area-style .contact-form-action p a:hover {
+	color: #62bd5e;
+  }
+  
+  .user-area-style.log-in-style .contact-form-action {
+	max-width: 600px;
+	margin: auto;
+  }
+  
+  .user-area-style.register-style .contact-form-action {
+	max-width: 600px;
+	margin: auto;
+  }
+  
+  .user-area-style.recover-password-area .recover {
+	max-width: 600px;
+	margin: auto;
+	border-top: 1px solid #ebebeb;
+	padding-top: 30px;
+  }
+  
+  .user-area-style.recover-password-area .recover .default-btn {
+	margin-bottom: 0;
+	margin-top: 30px;
+  }
+  
+  .user-area-style.recover-password-area h3 {
+	font-size: 40px;
+	margin-top: -11px;
+  }
+  
+  .user-area-style.recover-password-area p {
+	margin-bottom: 30px;
+	line-height: 1.8;
+  }
+  
+  .user-area-style.recover-password-area p a {
+	color: #62bd5e;
+	font-weight: 600;
+  }
+  
+  .user-area-style.recover-password-area .now-register {
+	float: right;
+	margin: 0;
+  }
+
+

@@ -16,13 +16,10 @@ class CreateDeliveryaddressesTable extends Migration
         Schema::create('deliveryaddresses', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('first_name');
-            $table->string('last_name');
             $table->string('company_name')->nullable();
             $table->integer('county_id');
             $table->integer('city_id');
             $table->string('pickuppoint');
-            $table->string('phone');
             $table->timestamps();
         });
     }

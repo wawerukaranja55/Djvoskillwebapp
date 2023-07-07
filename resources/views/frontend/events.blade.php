@@ -46,6 +46,7 @@
                             </div>
             </div>
         </div>
+        <div id="mapid" class="map map-home" style="width:100%; height:500px; margin-top: 50px"></div>
         <!--- END ROW -->
     </div>
     <!--- END CONTAINER -->
@@ -53,3 +54,28 @@
 <!-- END SCHEDULE -->
 
 @endsection
+
+@section('eventspagescripts')
+
+<script type="text/javascript">
+    var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+		osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+        
+        var voskillmap = L.map('mapid').setView([-1.2788, 36.8263], 15).addLayer(osm);
+
+        L.marker([-1.2788, 36.8263])
+            .addTo(voskillmap)
+            .bindPopup('A pretty CSS3 popup.<br />Easily customizable.')
+            .openPopup();
+
+    cordinates=[[-0.11229, 34.74642],[1.2306, 37.84096],[-2.2806, 35.066],[-0.2806, 37.066]]
+
+    let l = cordinates.length;
+
+    for(let i = 0; i < 1; i++ )
+    {
+        var marker=L.marker(cordinates[i]).addTo(voskillmap);
+    }
+</script>
+@stop

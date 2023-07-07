@@ -11,6 +11,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Merchadisestatus;
 use Database\Seeders\RoleSeeder;
 use Database\Seeders\Userseeder;
+use Database\Seeders\TownsSeeder;
 use App\Models\Merchadisecategory;
 use Database\Seeders\couponSeeder;
 use Database\Seeders\EventsSeeder;
@@ -22,6 +23,7 @@ use Database\Seeders\BookingstatusSeeder;
 use Database\Seeders\paymentmethodSeeder;
 use Database\Seeders\BlogcategoriesSeeder;
 use Database\Seeders\BookingpackageSeeder;
+use Database\Seeders\ShippingChargeSeeder;
 use Database\Seeders\MerchadisestatusSeeder;
 use Database\Seeders\BookingcategoriesSeeder;
 use Database\Seeders\MerchadisecategorySeeder;
@@ -36,6 +38,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(couponSeeder::class);
+
+        $this->call(MerchadiseSeeder::class);
         
         $this->call(BlogpostSeeder::class);
 
@@ -43,7 +47,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             Userseeder::class,
         ]);
-        \App\Models\Role::factory()->hasUsers(7)->create();
+        //\App\Models\Role::factory()->hasUsers(7)->create();
 
         $this->call([
             BookingpackageSeeder::class,
@@ -63,6 +67,8 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\Ticketstatus::factory()->hasevents(7)->create();
 
+        //Merchadise::factory()->count(50)->create();
+
         $this->call(BlogcategoriesSeeder::class);
 
         $this->call(BookingcategoriesSeeder::class);
@@ -73,5 +79,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(paymentmethodSeeder::class);
 
+        $this->call(ShippingChargeSeeder::class);
+
+        $this->call(TownsSeeder::class);
+        
     }
 }

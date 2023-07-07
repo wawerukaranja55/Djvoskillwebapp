@@ -8,6 +8,7 @@ use App\Models\Events;
 use App\Models\Events_Model;
 use App\Models\Merchadise;
 use App\Models\Mixxes_Model;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
@@ -29,9 +30,11 @@ class AdminDashboard_Controller extends Controller
         $events=Events::all();
         $merchadise=Merchadise::latest()->take(4)->get();
         $merchadisedata=Merchadise::all();
-        auth()->user()->unreadNotifications->markAsRead();
-       // return $user[0];
-        return view('backend.admindashboard',compact('merchadise','merchadisedata','user','bookings','adminposts','posts','mixxes','events',['notifications'=>Auth()->user()->notifications->take(4)],));
+        $allorders=Order::all();
+        // auth()->user()->unreadNotifications->markAsRead();
+        return view('backend.admindashboard',compact('merchadise','allorders','merchadisedata','user','bookings','adminposts','posts','mixxes','events'
+            // ,['notifications'=>Auth()->user()->notifications->take(4)]
+        ));
     }
 
     /**

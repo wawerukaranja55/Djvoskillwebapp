@@ -10,7 +10,7 @@ class Deliveryaddress extends Model
 {
     use HasFactory;
     protected $table = 'deliveryaddresses';
-    protected $fillable = ['user_id','first_name','last_name','pickuppoint','company_name','phone','county_id','city_id'];
+    protected $fillable = ['user_id','pickuppoint','company_name','county_id','city_id','shipping_cost'];
 
     public static function deliveryaddresses(){
         $user_id=Auth::id();

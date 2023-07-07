@@ -23,6 +23,7 @@ class MerchadiseFactory extends Factory
     {
         return [
             'merch_name'=>$this->faker->unique(5)->company(),
+            'url'=>$this->faker->unique(5)->company(),
             'merch_code'=>$this->faker->numerify('merch-####'),
             'merch_price'=>$this->faker->numberBetween(100, 150),
             'merch_image'=>'product.PNG',
@@ -37,7 +38,7 @@ class MerchadiseFactory extends Factory
             'fabric'=>$this->faker->unique()->name,
             'occasion'=>$this->faker->unique()->name,
             'meta_keywords'=>$this->faker->unique()->name,
-            'is_attribute'=>1,
+            'is_attribute'=>0,
             'is_featured'=>'No',
         ];
     }

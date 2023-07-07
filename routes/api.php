@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MpesatransactionController;
+use App\Http\Controllers\Order_Controller;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-    // pay with mpesa
-Route::get('/mpesa/password', [MpesatransactionController::class,'lipanampesapassword'])->name('lipanampesapassword');
+    // pay with stripe
+Route::post('/stripe/postpay_ment', [Order_Controller::class,'stripepayment'])->name('stripe-payment');
 
-Route::post('/mpesa/newaccesstoken', [MpesatransactionController::class,'newaccesstoken'])->name('newaccesstoken');
-
-Route::post('/mpesa/stkpush', [MpesatransactionController::class,'stkpush'])->name('stkpush');
-
-Route::post('/mpesa/storedb', [MpesatransactionController::class,'mpesaresponse'])->name('mpesaresponse');

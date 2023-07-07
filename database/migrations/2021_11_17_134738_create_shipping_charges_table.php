@@ -16,7 +16,7 @@ class CreateShippingChargesTable extends Migration
         Schema::create('shipping_charges', function (Blueprint $table) {
             $table->id();
             $table->string('county');
-            $table->boolean('is_shipping')->default('0');
+            $table->boolean('is_shipping')->default('1');
             $table->timestamps();
         });
     }

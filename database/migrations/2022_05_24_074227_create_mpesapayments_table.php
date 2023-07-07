@@ -15,9 +15,12 @@ class CreateMpesapaymentsTable extends Migration
     {
         Schema::create('mpesapayments', function (Blueprint $table) {
             $table->id();
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('phone');
             $table->string('amount');
-            // $table->string('customer_name');
+            //$table->string('is_paid')->default('partial_paid');
+            $table->string('is_confirmed')->default('not_yet');
             $table->string('mpesatransaction_id');
             $table->timestamps();
         });

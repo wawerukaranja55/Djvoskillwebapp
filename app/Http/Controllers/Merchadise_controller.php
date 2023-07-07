@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Town;
 use App\Models\coupon;
 use App\Models\Merchadise;
 use Illuminate\Http\Request;
@@ -11,6 +12,7 @@ use App\Models\Productattribute;
 use App\Models\Merchadisecategory;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
+use Yajra\DataTables\Facades\DataTables;
 
 class Merchadise_controller extends Controller
 {
@@ -150,6 +152,8 @@ class Merchadise_controller extends Controller
                     $video_path='videos/productvideos/';
                     $videotmp->move($video_path,$video_name);
                 }
+            } else {
+                $video_name="";
             }
 
             $merchadise=new Merchadise();
@@ -452,8 +456,99 @@ class Merchadise_controller extends Controller
      */
     public function shippingcharges()
     {
-        $shippingcharges=shipping_charge::get();
-        return view('backend.merchadise.viewshipping',['shippingcharges'=>$shippingcharges]);
+        
+        return view('backend.merchadise.viewshipping');
+    }
+
+    // store a transaction type in the db
+    public function addshippingprice(Request $request)
+    {
+        $data=$request->all();
+
+        $shippingtown=Town::where('town',$data['county_town'])->count();
+        if($shippingtown>0){
+            $message="The Price for this town already  exists.";
+            return response()->json(['status'=>400,
+                                    'message'=>$message]);
+        }else{
+
+            $data=$request->all();
+
+            Town::create([
+                'county_id'=>$data['county'],
+                'town'=>$data['county_town'],
+                'pickuppoint'=>$data['pick_up_point'],
+                'shipping_charges'=>$data['town_price']
+            ]);
+
+            $message="Shipping Charges Has Been Saved In the DB Successfully.";
+            return response()->json([
+                'status'=>200,
+                'message'=>$message
+            ]);
+        }     
+    }
+
+    public function get_shippingprices(Request $request)
+    {
+        $shippingcharges=Town::with('shippingcounty');
+
+        if($request->ajax()){
+            $shippingcharges = DataTables::of ($shippingcharges)
+
+            ->addColumn ('county_id',function(Town $town){
+                return $town->shippingcounty->county;
+            })
+
+            ->addColumn ('status',function($row){
+                return 
+                '<input class="townshippingstatus" type="checkbox" checked data-toggle="toggle" data-id="'.$row->id.'" data-on="Active" data-off="Not Active" data-onstyle="success" data-offstyle="danger">';
+            })
+
+            ->addColumn ('action',function($row){
+                return '
+                <a title="Edit Shipping Prices" href="#'.$row->id.'" class="btn btn-primary btn-xs">
+                    <i class="fas fa-edit"></i>
+                </a>';
+            })
+            ->rawColumns(['county_id','status','action'])
+            ->make(true);
+
+            return $shippingcharges;
+        }
+    }
+
+    public function get_shippingcounties(Request $request)
+    {
+        $shippingcounties=shipping_charge::get();
+
+        if($request->ajax()){
+            $shippingcounties = DataTables::of ($shippingcounties)
+
+            ->addColumn ('status',function($row){
+                return 
+                '<input class="countystatus" type="checkbox" checked data-toggle="toggle" data-id="'.$row->id.'" data-on="Active" data-off="Not Active" data-onstyle="success" data-offstyle="danger">';
+            })
+
+            ->rawColumns(['status'])
+            ->make(true);
+
+            return $shippingcounties;
+        }
+    }
+
+    // update the status for a room for a rental house
+    public function updatetownshippingstatus(Request $request)
+    {
+        dd($request->all());die();
+        $roomstatus=Town::find($request->id);
+        $roomstatus->status=$request->status;
+        $roomstatus->save();
+
+        return response()->json([
+            'status'=>200,
+            'message'=>'Room Status changed successfully'
+        ]);
     }
 
     /**

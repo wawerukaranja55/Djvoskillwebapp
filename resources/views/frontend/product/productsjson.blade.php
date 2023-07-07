@@ -2,45 +2,7 @@
 
 <div class="row">
     <div class="col-md-3">
-        <!-- form-group // -->
-        <div class="form-group">
-            <form name="sortproducts" id="sortproducts">
-                <input type="text" name="url" id="url" value="{{ $url }}" style="display:none">
-                <select name="sort" class="sort" id="sort">
-                    <option value="">Default Sorting</option>
-                    <option value="latest_products"
-                        @if (isset($_GET['sort']) && $_GET['sort']=="latest_products")
-                            selected=""
-                        @endif
-                    >Latest Products</option>
-                    <option value="most_popular"
-                        @if (isset($_GET['sort']) && $_GET['sort']=="most_popular")
-                            selected=""
-                        @endif
-                    >Most Popular</option>
-                    <option value="low_to_high"
-                        @if (isset($_GET['sort']) && $_GET['sort']=="low_to_high")
-                            selected=""
-                        @endif
-                    >Price:Low to High</option>
-                    <option value="high_to_low"
-                        @if (isset($_GET['sort']) && $_GET['sort']=="high_to_low")
-                            selected=""
-                        @endif
-                    >Price:High to Low</option>
-                    <option value="product_name_a_z"
-                        @if (isset($_GET['sort']) && $_GET['sort']=="product_name_a_z")
-                            selected=""
-                        @endif
-                    >Product Name:A to Z</option>
-                    <option value="product_name_z_a"
-                        @if (isset($_GET['sort']) && $_GET['sort']=="product_name_z_a")
-                            selected=""
-                        @endif
-                    >Product Name:Z to A</option>
-                </select>
-            </form>
-        </div>
+        
     </div>
     <div class="col-md-9">
         <!-- form-group // -->
@@ -52,23 +14,12 @@
 <!-- content left -->
 
 
- <!-- /.content left -->
-<div class="d-flex justify-content-center">
-    @if(isset($_GET['nice-select'])&&!empty($_GET['nice-select']))
-        {{ $productscategory->appends(['nice-select'=>$_GET['nice-select']])->links() }}
-    @else
-        {{ $productscategory->links() }}
-    @endif
-</div>
-
 <div class="row">
-    <?php if ($productscategory->isEmpty()) { ?>
+    @if ($productscategory->isEmpty())
         No Products Found At the Moment
-    <?php } else 
-    {
-        $countp=0;?>
+    @else 
         @foreach ($productscategory as $product)
-            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1 mb-5" style="border: 2px solid green">
+            <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1 mb-5">
                 <div class="card"> 
                     <img class="card-img-top" src="{{ asset ('images/productimages/small/'.$product->merch_image) }}">
                     <div class="card-body">
@@ -76,14 +27,18 @@
                         <div class="d-flex align-content-center justify-content-center">
                             <span class="pt-1">{{ $product->merchadisecategor->merchadisecat_title }}</span>
                         </div>
-                        1.<span class="pt-1">{{ $product->fabric }}</span>
+                        <span class="pt-1">{{ $product->fabric }}</span>
                         <hr>
-                        2.<span class="pt-1">{{ $product->occasion }}</span>
+                        <span class="pt-1">{{ $product->occasion }}</span>
+                        <hr>
+                        <span class="pt-1">{{ $product->product_views }} Views</span>
                         <div class="fs-sm mb-4">
-                            <input name="quantity" type="number" value="1" class="prod_qty" >
-                            <input class="prod_id<?php echo $countp;?>" name="product_id" type="hidden" value="{{ $product->id }}">
+                            <input name="quantity" type="number" value="1" id="prod_qty{{ $product->id }}" >
+                            <input id="prod_id" name="product_id" type="hidden" prodid="{{ $product->id }}">
+
+                            {{-- product has no attribute --}}
                             @if ($product->is_attribute==0)
-                                <input class="prodsize" name="productattrsize" type="text" value="small">
+                                <input class="prodsize" id="productsize{{ $product->id }}" name="productattrsize" type="text" productid={{ $product->id }} value="small">
                                 <div class="d-flex align-items-center justify-content-between pt-3">
                                     <div class="d-flex flex-row">
                                         <?php $discountedprice=Merchadise::getdiscountedprice($product->id);?>
@@ -92,15 +47,16 @@
                                             <del>
                                                 <p class="lead text-muted text-decoration-line-through">sh {{$product->merch_price }}</p>
                                             </del>
-                                            <p class="lead text-muted text-decoration-line-through" style="float-right">sh {{ $discountedprice }}</p>
+                                            <p class="lead text-muted text-decoration-line-through" style="float-right">sh <span name="productprice" id="showcalculatedattrprice{{ $product->id }}">{{ $discountedprice }}</span></p>
                                         @else
-                                            <p class="lead text-muted text-decoration-line-through">sh {{$product->merch_price }}</p>
+                                            <p class="lead text-muted text-decoration-line-through">sh <span name="productprice" id="showcalculatedattrprice{{ $product->id }}">{{$product->merch_price }}</span></p>
                                         @endif
                                     </div>
                                 </div>
                     
                             @elseif ($product->is_attribute==1)
-                                <select class="custom-select prodsize" productid="{{ $product->id }}" name="productattrsize">
+                            {{-- product has attribute --}}
+                                <select class="custom-select prodsize" id="productsize{{ $product->id }}" name="productattrsize" productid={{ $product->id }}>
                                     <option value="">Select</option>
                                     @foreach ($product->merchadiseattributes as $attribute )
                                         <option value="{{ $attribute->productattr_size }}" required>{{ $attribute->productattr_size }}</option>
@@ -113,24 +69,31 @@
                                         <!-- Product price-->
                                         @if ($discountedprice>0)
                                             <del>
-                                                <p class="lead text-muted text-decoration-line-through" id="showattrprice">sh {{$product->merch_price }}</p>
+                                                <p class="lead text-muted text-decoration-line-through showattrprice">sh<span id="showattrprice{{ $product->id }}">{{$product->merch_price }}</span></p>
                                             </del>
-                                            <p class="lead text-muted text-decoration-line-through ml-3" id="showcalculatedattrprice" style="float-right">sh {{ $discountedprice }}</p>
+                                            <p class="lead text-muted text-decoration-line-through ml-3" style="float-right">sh<span name="productprice" id="showcalculatedattrprice{{ $product->id }}">{{ $discountedprice }}</span></p>
+                                        @else
+                                            <p class="lead text-muted text-decoration-line-through ml-3" style="float-right">sh<span name="productprice" id="showcalculatedattrprice{{ $product->id }}">{{$product->merch_price }}</span></p>
                                         @endif
                                     </div>
                                 </div>
                             @endif
-                            
+                            <p id="msg{{ $product->id }}" style="font-size: 17px;"></p>
+                            <br>
                             <div class="d-flex ">
                                 <a href="{{ url('merchadise/'.Str::slug($product->merch_name).'/'.$product->id) }}" class="p-3 bg-dark text-white btn btn-primary ml-2">View Product</a>
-                                <a class="p-3 bg-dark text-white btn btn-primary ml-2 add-to-cart<?php echo $countp;?>">Add to Cart</a>
-                                <div id="successmsg<?php echo $countp;?>" class="alert alert-message bg-grey text-dark"></div>
+                                <a class="p-3 bg-dark text-white btn btn-primary ml-2 add-to-cart" product_id={{$product->id}} >Add to Cart</a>
+                                <div id="successmsg" class="alert alert-message bg-grey text-dark"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php $countp++?>
         @endforeach
-    <?php } ?> 
+    @endif
+</div>
+
+<!-- /.content left -->
+<div class="d-flex justify-content-center">
+    {!! $productscategory->links() !!}
 </div>

@@ -69,7 +69,7 @@
           <div class="col-md-12 mb-4">
               <div class="form-outline">
                   <label class="form-label" for="expiry_date">Expiry Date</label>
-                  <input type="text" id="expiry_date" name="expiry_date" class="form-control form-control-lg" style="background: rgb(196, 191, 191);"/>
+                  <input type="text" id="datepicker" name="expiry_date" class="form-control form-control-lg" style="background: rgb(196, 191, 191);"/>
               </div>
           </div>
         </div>

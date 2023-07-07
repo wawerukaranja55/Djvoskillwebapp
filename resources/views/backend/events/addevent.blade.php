@@ -81,7 +81,7 @@
             <!-- Main Image Button--->
             <label for="file">Event Flyer</label>
             <input type="file" name="eve_image" onchange="readURL(this);"/>
-            <img id="eve_image" style="width: 100px;"  src="{{asset('dist/admin/eventimages')}}"/>
+            <img id="eve_image" style="width: 100px;"/>
             <br>
 
             <button type="submit" class="btn btn-dark btn-block">Submit</button>

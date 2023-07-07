@@ -13,7 +13,6 @@
                     PAYPAL
                 @endif</h2>
             <p class="text-center">Your Payment of Ksh.<span class="font-weight-bold">{{ Session::get('grand_total') }} </span>has been paid successfully.Your order number is:<span class="font-weight-bold">{{ Session::get('order_id') }}</span></p>
-            {{-- <p class="text-center">You will receive an order confirmation email with details of your order and a link to track your process.</p> --}}
             <center>
                 <div class="btn-group" style="margin-top:50px;">
                     <a href="{{ url('thankyou') }}" class="btn btn-lg btn-warning">CONFIRM ORDER</a>

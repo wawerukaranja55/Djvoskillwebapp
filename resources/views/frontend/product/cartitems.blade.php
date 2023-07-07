@@ -7,7 +7,8 @@
             <h3>MY CART PRODUCT DETAILS</h3>
         </div>
     </div>
-    <table id="userdatatables" class="table table-striped table-bordered nowrap" style="width:100%; border:2px solid black;">
+
+    <table class="userdatatable table table-striped table-bordered nowrap" style="width:100%;">
         <thead>
             <tr>
                 <th>Product Name</th>
@@ -19,25 +20,22 @@
                 <th>Remove</th>
             </tr>
         </thead>
-         <tbody>
-            <?php $total_price=0; ?>
+        <tbody>
             <?php $attributetotal_price=0; ?>
             <?php $noattributetotal_price=0; ?>
-            @forelse ($cartitems as $item)
-
-                @if ($item->product->is_attribute==1)
-                    <?php $attrpric=Merchadise::getdiscountedattrprice($item['product_id'],$item['size']);
-                        
-                    ?>,
-                @else
-                    <?php $discountedprice=Merchadise::getdiscountedprice($item['product_id']);
-                                
-                    ?>
-                @endif
-                
+            @foreach($cartitems as $item)
                 <tr>
+                    @if ($item->product->is_attribute=="1")
+                        <?php $attrpric=Merchadise::getdiscountedattrprice($item['product_id'],$item['size']);
+                            
+                        ?>,
+                    @else
+                        <?php $discountedprice=Merchadise::getdiscountedprice($item['product_id']);
+                                    
+                        ?>
+                    @endif
                     <td>{{ $item->product->merch_name }}</td>
-                    @if ($item->product->is_attribute==1)
+                    @if ($item->product->is_attribute=="1")
                         <td>{{ $attrpric['merch_price'] }}</td>
                     @else
                         <td>{{ $item->product->merch_price }}</td>
@@ -50,38 +48,30 @@
                         <button class="itemupdate qtyminus" type="button" data-cartid="{{ $item->id }}">
                             <i class="fa fa-minus" aria-hidden="true"></i>
                         </button>
-                        <input data-id={{ $item->id }} class="quantity" min="1" name="quantity[]" value="{{ $item->quantity }}" type="number">
+                        <input data-id={{ $item->id }} class="quantity" min="1" name="quantity[]" value="{{ $item->quantity }}" type="number" readonly>
                         <button class="itemupdate qtyplus" type="button" data-cartid="{{ $item->id }}">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </button>
                     </td>
-                    @if ($item->product->is_attribute==1)
-                        <td>sh.{{ $attrpric['discount'] * $item['quantity'] }}</td>
+                    @if ($item->product->is_attribute==1)<td>sh.{{ $attrpric['discount'] * $item['quantity'] }}</td>
                         <td>sh.{{ $attrpric['final_price'] * $item['quantity'] }}</td>
                     @elseif($item->product->is_attribute==0)
                         
                         <td>{{ ($item->product->merch_price-$discountedprice) * $item['quantity'] }}</td>
                         <td>{{ $discountedprice * $item['quantity'] }}</td>
                     @endif
-                    
                     <td>
-                        <form method="POST" action="{{ route('deletecartitem', $item->id) }}">
-                            @csrf
-                            <input name="method" type="hidden" value="DELETE">
-                            <button type="submit" class="btn btn-xs btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'>Delete</button>
-                        </form>
+                        <a class="btn btn-primary btn-xs" onclick="confirm return('Are you Sure You want to Delete?')" href="{{ route('deletecartitem', $item->id) }}"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
+                    {{-- show cart total --}}
                 @if ($item->product->is_attribute==1)
-                    <?php $attributetotal_price=$total_price+($attrpric['final_price'] * $item['quantity'] );
+                    <?php $attributetotal_price=$attributetotal_price+($attrpric['final_price'] * $item['quantity'] );
                     ?>
                 @elseif($item->product->is_attribute==0)
-                    <?php $noattributetotal_price=$total_price+($discountedprice * $item['quantity'] );?>
-              @endif
-            
-            @empty
-                <P style="font-size: 15px; text-align:center;margin:40px;">Your Cart is Empty.Click <a href="{{url('products')}}">here</a> to shop for products</p>
-            @endforelse
+                    <?php $noattributetotal_price=$noattributetotal_price+($discountedprice * $item['quantity'] );?>
+                @endif
+            @endforeach
         </tbody>
     </table>
 
@@ -93,14 +83,6 @@
     <div class="row">
         <div class="col-12">
             <div class="coupon-all">
-                <form class="coupon" id="applycoupon" method="POST" action="javascript:void(0);"
-                    @if(Auth::check())
-                        couponuser="1"
-                    @endif>
-                    @csrf
-                    <input id="couponcode" class="input-text" name="couponcode" placeholder="Enter Your Coupon code" type="text">
-                    <button type="submit" class="btn btn-secondary" id="couponbtn">Apply Coupon</button>
-                </form>
                 <div class="coupon2">
                     <a href="{{ url('products') }}" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a>
                 </div>
@@ -114,23 +96,20 @@
                 <ul class="mb-20">
                     <li>Coupon Discount
                         <span class="couponAmount">
-                            @if (Session::has('couponAmount'))
-                            -Sh.{{ Session::get('couponAmount') }}
-                            @else
-                            sh.0   
-                            @endif
+                            sh.0
                         </span>
                     </li>
                     <li>Grand Total 
-                        <span class="grand_total">Sh.{{ $attributetotal_price+$noattributetotal_price-Session::get('couponAmount') }}</span>
+                        <span class="grand_total">Sh.{{ $attributetotal_price + $noattributetotal_price-0 }}</span>
                     </li>
                 </ul>
-                @auth
+                <a href="{{ url('checkout') }}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a>
+                {{-- @auth
                     <a href="{{ url('checkout') }}" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a>
                 @else
                     <p>To proceed to checkout create or log in to your account...</p>
                     <span href="#" data-toggle="modal" data-target="#RegistrationModal" class="btn btn-success btn-block">Create/Login an Account<i class="fa fa-angle-right"></i></span>
-                @endauth
+                @endauth --}}
             </div>
         </div>
     </div> 

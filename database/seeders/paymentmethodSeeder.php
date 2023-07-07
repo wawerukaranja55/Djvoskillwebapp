@@ -17,8 +17,7 @@ class paymentmethodSeeder extends Seeder
         $paymentmethods=[
             ['id'=>1,'payment_name'=>'MPESA','status'=>'1'],
             ['id'=>2,'payment_name'=>'PAYPAL','status'=>'1'],
-            ['id'=>3,'payment_name'=>'SENDWAVE','status'=>'1'],
-            ['id'=>4,'payment_name'=>'PAY CASH ON DELIVERY','status'=>'1']
+            ['id'=>3,'payment_name'=>'STRIPE','status'=>'1']
             
         ];
 

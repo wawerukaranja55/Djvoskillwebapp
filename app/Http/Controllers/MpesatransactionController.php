@@ -29,27 +29,18 @@ class MpesatransactionController extends Controller
     // generate access token for the transaction
     public function newaccesstoken()
     {
-        $consumer_key="VyEprVwd9G3GGNdAzDXAq8U8NMleEAh9";
-
-        $consumer_secret="VS9qdwbLNAQnGGtI";
-
-        $credentials=base64_encode($consumer_key.":".$consumer_secret);
-
-        $url="https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
-
-        $curl=curl_init();
-        curl_setopt($curl,CURLOPT_URL,$url);
-        curl_setopt($curl,CURLOPT_HTTPHEADER,array("Authorization:Basic ".$credentials,
-                                                    "Content-Type:application/json"));
-        curl_setopt($curl,CURLOPT_HEADER,false);
-        curl_setopt($curl,CURLOPT_SSL_VERIFYPEER,false);
-        curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
-
-        $curl_response=curl_exec($curl);
+        $consumer_key="XVwmLQdP80el8pFey0ChGxqOgcTJCj2o";
+        $consumer_secret="IQ5WuDOX3jon0mR8";
+        $credentials = base64_encode($consumer_key.":".$consumer_secret);
+        $url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array("Authorization: Basic ".$credentials));
+        curl_setopt($curl, CURLOPT_HEADER,false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $curl_response = curl_exec($curl);
         $access_token=json_decode($curl_response);
-
-        curl_close($curl);
-        
         return $access_token->access_token;
     }
 

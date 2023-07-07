@@ -11,6 +11,7 @@ use App\Http\Controllers\Home_Controller;
 use App\Http\Controllers\Role_Controller;
 use App\Http\Controllers\User_controller;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\orderscontroller;
 use App\Http\Controllers\Searchcontroller;
 use App\Http\Controllers\Admins_Controller;
 use App\Http\Controllers\Events_Controller;
@@ -20,6 +21,7 @@ use App\Http\Controllers\contact_controller;
 use App\Http\Controllers\Product_Controller;
 use App\Http\Controllers\Blogpost_Controller;
 use App\Http\Controllers\Bookings_controller;
+use App\Http\Controllers\Signinup_Controller;
 use App\Http\Controllers\ContactUs_Controller;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Merchadise_controller;
@@ -27,7 +29,7 @@ use App\Http\Controllers\MpesapaymentController;
 use App\Http\Controllers\PostComment_controller;
 use App\Http\Controllers\Userprofile_controller;
 use App\Http\Controllers\Blogcategory_Controller;
-use App\Http\Controllers\Commentreply_controller;
+use App\Http\Controllers\Order_Controller;
 use App\Http\Controllers\Adminsettings_controller;
 use App\Http\Controllers\AdminDashboard_Controller;
 use App\Http\Controllers\Commentreplies_controller;
@@ -69,7 +71,27 @@ Route::get('/post', function () {
 
 Route::get('/', [Home_Controller::class,'homepage'])->name('index');
 
-Route::get('/logout', [AuthenticatedSessionController::class,'destroy'])->name('logout');
+    // Login and Sign Up Controllers
+Route::get('registeruser',[Signinup_Controller::class,'register'])->name('register');
+
+Route::get('loginuser',[Signinup_Controller::class,'login'])->name('login');
+
+    // activation controller 
+Route::match(['get','post'],'confirmaccount/{code}',[Signinup_Controller::class,'confirmaccount']);
+
+    // forgot password controller 
+Route::match(['get','post'],'forgotpassord',[Signinup_Controller::class,'forgotpassword']);
+
+    // signin,logout and sign up functions
+Route::post('signup',[Signinup_Controller::class,'signup'])->name('signup');
+
+Route::get('check_email',[Signinup_Controller::class,'check_email'])->name('check_email');
+
+Route::post('signin',[Signinup_Controller::class,'signin'])->name('signin');
+
+Route::post('signout', [Signinup_Controller::class,'signout'])->name('signout');
+
+        // Route::get('/logout', [AuthenticatedSessionController::class,'destroy'])->name('logout');
 
             /*Mixtapes Page */
 Route::view('/allmixtapes', 'frontend.allmixtapes')->name('allmixtapes');
@@ -82,24 +104,24 @@ Route::get('/events', [Home_Controller::class,'events'])->name('events');
 Route::get('event/{slug}/{id}', [Home_Controller::class,'singleevent'])->name('singleevent');
 
             /*Merchadise Page */
-// $caturls=Merchadisecategory::select('url')->where('status',1)->get()->pluck('url');
+$caturls=Merchadisecategory::select('url')->where('status',1)->get()->pluck('url');
 
-// foreach($caturls as $url)
-// {
-//     Route::get('/'.$url,[Home_Controller::class,'merchadise'])->name('merchadise');
-// }
+foreach($caturls as $url)
+{
+    
+    Route::get('/'.$url,[Home_Controller::class,'merchadise'])->name('merchadise');
+}
 
-Route::get('{url}',[Home_Controller::class,'merchadise'])->name('merchadise');
 
 Route::get('merchadise/{slug}/{id}', [Home_Controller::class,'singleproduct'])->name('singleproduct');
 
-// slide to fetch products
-Route::get('/productslider', [Home_Controller::class,'productslider'])->name('productslider');
+// find products in the db using jquery ajax
+Route::post('autocomplete/fetch', [Home_Controller::class,'findproducts'])->name('findproducts');
 
 Route::post('/addtocart', [Home_Controller::class,'addtocart'])->name('addtocart');
 
 // get attribute price in the product page
-Route::post('/add-to-cart', [Home_Controller::class,'add_to_cart'])->name('add-to-cart');
+Route::post('/add_to_cart', [Home_Controller::class,'add_to_cart'])->name('add_to_cart');
 
 Route::post('/getproductprice', [Home_Controller::class,'getproductprice'])->name('getproductprice');
 
@@ -108,7 +130,7 @@ Route::post('/getattrproductprice', [Home_Controller::class,'getattrproductprice
 
 Route::get('/mycart',[Home_controller::class,'cart'])->name('mycart');
 
-Route::post('delete-cart-item/{id}', [Home_controller::class,'deletecartitem'])->name('deletecartitem');
+Route::get('delete-cart-item/{id}', [Home_controller::class,'deletecartitem'])->name('deletecartitem');
 
 Route::post('/updatecartitemquantity', [Home_Controller::class,'updatecartitem'])->name('updatecartitem');
 
@@ -118,19 +140,34 @@ Route::get('/displayshippingprice',[Home_controller::class,'displayshippingprice
 
 Route::resource('address',Address_Controller::class);
 
-Route::group(['middleware'=>['auth']],function(){
-    Route::post('/apply-coupon',[Home_controller::class,'applycoupon'])->name('applycoupon');
-
-    Route::post('/addtoorder', [Home_Controller::class,'addtoorder'])->name('addtoorder');
+Route::group(['middleware'=>['Added_to_Cart']],function(){
 
     Route::get('/checkout',[Home_controller::class,'checkout'])->name('mycheckout');
+});
+
+Route::group(['middleware'=>['auth']],function(){
+
+    Route::resource('userprofile',Userprofile_controller::class);
+
+    Route::get('/get_userorders',[Userprofile_controller::class,'userorders'])->name('user.orders');
+
+    Route::post('/apply-coupon',[Home_controller::class,'applycoupon'])->name('apply_coupon');
+
+    
+
+    //show all orders by a user
+    Route::post('/place_order', [Order_Controller::class,'place_order'])->name('place_order');
+
+    Route::post('/post_paypal', [Order_Controller::class,'post_paypal'])->name('post_paypal');
 
     Route::get('/paypal', [Home_Controller::class,'paypal'])->name('paypal');
 
-    Route::get('paypal/fail', [Home_Controller::class,'paypalfail'])->name('paypalfail');
+    Route::post('/mpesa_confirmation', [Order_Controller::class,'mpesa_confirmation'])->name('mpesa.confirmation');
 
         //successfull payments
     Route::get('payment/success', [Home_Controller::class,'paymentsuccess'])->name('paymentsuccess');
+
+    Route::get('paypal/fail', [Home_Controller::class,'paypalfail'])->name('paypalfail');
 
         // pay with mpesa
     Route::get('/mpesa', [Home_Controller::class,'mpesa'])->name('mpesa');
@@ -181,9 +218,6 @@ Route::group(['prefix'=>'blog'],function(){
 Route::resource('contact',contact_controller::class);
 
 Route::post('/sendbooking', [Bookings_controller::class,'store'])->name('sendbooking');
-
-            /*User Profile Page */
-Route::resource('userprofile',Userprofile_controller::class);
 
             /*Search Bar*/
 Route::resource('search',Searchcontroller::class);
@@ -241,14 +275,46 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
     
     Route::resource('coupons', CouponController::class);
 
-    // Merchadise attributes
+    // Orders made by customers
+    Route::get('/new_orders', [orderscontroller::class,'new_orders'])->name('orders.new');
+
+    Route::get('/intransit_orders', [orderscontroller::class,'intransit_orders'])->name('orders.intransit');
+
+    Route::get('/delivered_orders', [orderscontroller::class,'delivered_orders'])->name('orders.delivered');
+
+    Route::get('/picked_orders', [orderscontroller::class,'picked_orders'])->name('orders.picked');
+
+    Route::get('/get_neworders', [orderscontroller::class,'neworders'])->name('users.neworders');
+
+    Route::get('/get_intransitorders', [orderscontroller::class,'intransitorders'])->name('users.intransitorders');
+
+    Route::get('/get_deliveredorders', [orderscontroller::class,'deliveredorders'])->name('users.deliveredorders');
+
+    Route::get('/get_neworders', [orderscontroller::class,'neworders'])->name('users.neworders');
+
+    Route::get('/get_userorder/{id}', [orderscontroller::class,'user_order'])->name('user.order');
+
+    Route::post('/update_userorder/{id}', [orderscontroller::class,'update_order'])->name('update.order'); 
+
+    Route::post('/update_ordervehicle/{id}', [orderscontroller::class,'update_order_vehicle_reg'])->name('update_order.vehicle_reg');
+
+    Route::post('/update_orderpicking/{id}', [orderscontroller::class,'update_order_to_picking'])->name('update_order.picking'); 
+
     Route::post('/attributes/{id}', [Merchadise_controller::class,'addattributes'])->name('addattributes');
 
     Route::match(['get','post'],'edit-attributes/{id}', [Merchadise_controller::class,'editattributes'])->name('editattributes');
 
     Route::post('/updateattributestatus', [Merchadise_controller::class,'updateattributestatus'])->name('updateattributestatus');
 
-    Route::get('/shippingcharges', [Merchadise_controller::class,'shippingcharges'])->name('shippingcharges');
+    Route::get('/shippingcharges', [Merchadise_controller::class,'shippingcharges'])->name('shippingcharges'); 
+
+    Route::get('/get_shippingprices', [Merchadise_controller::class,'get_shippingprices'])->name('get_shippingprices');
+
+    Route::get('/updatetownshippingstatus',[Merchadise_controller::class,'updatetownshippingstatus'])->name('updateshipping.status');
+
+    Route::get('/get_shippingcounties', [Merchadise_controller::class,'get_shippingcounties'])->name('get_shippingcounties');
+
+    Route::post('/addshippingprice', [Merchadise_controller::class,'addshippingprice'])->name('addshippingprice');
 
     Route::match(['get','post'],'editshippingcharges/{id}', [Merchadise_controller::class,'editshippingcharge'])->name('editshippingcharge');
 
@@ -309,6 +375,6 @@ Route::group(['middleware'=>config('fortify.middleware',['web'])],
         ]));
     
     });
-Auth::routes();
+// Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

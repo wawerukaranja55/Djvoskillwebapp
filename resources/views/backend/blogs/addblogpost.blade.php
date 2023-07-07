@@ -41,7 +41,7 @@
 
             <div class="form-group">
                 <label for="tags">Post Tags</label>
-                <select name="tags[]" class="blogtags form-control" multiple="multiple">
+                <select name="tags[]" class="couponselect2 form-control" multiple="multiple">
                     @foreach($blogtags as $blogtag)
                        <option value="{{ $blogtag->id  }}">{{ $blogtag->blogtag_title }}</option>
                     @endforeach

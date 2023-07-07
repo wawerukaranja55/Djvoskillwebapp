@@ -73,6 +73,13 @@
                                         <h5 class="mr-2 mb-0">{{ count($bookings) }}</h5>
                                         </div>
                                     </div>
+                                    <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                                        <i class="mdi mdi-calendar-clock mr-3 icon-lg text-warning"></i>
+                                        <div class="d-flex flex-column justify-content-around">
+                                        <small class="mb-1 text-muted">Orders</small>
+                                        <h5 class="mr-2 mb-0">{{ count($allorders) }}</h5>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

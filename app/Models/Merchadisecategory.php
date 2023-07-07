@@ -34,6 +34,7 @@ class Merchadisecategory extends Model
                 }
             ])->
         where('url',$url)->first();
+
         $catids=array();
         $catids[]=$categorydetails['id'];
 
@@ -42,7 +43,17 @@ class Merchadisecategory extends Model
             $catids[]=$subcart['id'];
         }
 
-         return array('catids'=>$catids,'categorydetails'=>$categorydetails);
+        // show breadcrumbs in the listing page
+        if($categorydetails['parent_id']==0){
+            $breadcrumbs='<a href="'.url($categorydetails['url']).'">'.$categorydetails['merchadisecat_title'].'</a>';
+        }else{
+            $parentcategory=Merchadisecategory::select('merchadisecat_title','url')->where('id',$categorydetails['parent_id'])->first();
+
+            $breadcrumbs='<a href="'.url($parentcategory['url']).'">'.$parentcategory['merchadisecat_title'].'</a>&nbsp;<span class="divider"></span>
+            &nbsp;<a href="'.url($categorydetails['url']).'">'.$categorydetails['merchadisecat_title'].'</a>';
+        }
+
+        return array('catids'=>$catids,'breadcrumbs'=>$breadcrumbs,'categorydetails'=>$categorydetails);
     }
     
 }

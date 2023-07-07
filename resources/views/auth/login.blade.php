@@ -1,4 +1,4 @@
-@extends('layouts.app')
+{{-- @extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -70,8 +70,9 @@
         </div>
     </div>
 </div>
-@endsection
-{{-- @extends('frontend.master')
+@endsection --}}
+
+@extends('frontend.master')
 @section('title','Login Panel')
 @section('content')
     <section class="ftco-section">
@@ -160,6 +161,6 @@
             </div>
         </div>
     </section>
-@endsection --}}
+@endsection
 
   

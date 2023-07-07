@@ -60,6 +60,7 @@ class Kernel extends HttpKernel
         
         'auth' => \App\Http\Middleware\Authenticate::class,
         'Admin' => \App\Http\Middleware\Admin::class,
+        'Added_to_Cart' => \App\Http\Middleware\Added_to_Cart::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,

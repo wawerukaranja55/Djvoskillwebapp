@@ -3,43 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Events;
 use App\Models\Events_Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class Userprofile_controller extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    
 
     /**
      * Display the specified resource.
@@ -51,10 +24,29 @@ class Userprofile_controller extends Controller
     {
         $events=Events::latest()->take(4)->get();
         $user=User::findorfail($id);
+        $latest_order=Order::where(['user_id'=>$id])->select('order_status')->orderBy('id', 'desc')->first()->order_status;
 
-        return view('frontend.userprofile',['events'=>$events,'user'=>$user]);
+        return view('frontend.userprofile',['events'=>$events,'latest_order'=>$latest_order,'user'=>$user]);
     }
 
+    // show all orders for a user
+    public function userorders(Request $request)
+    {
+        $userorders=Order::where(['email'=>Auth::user()->email])->select('id','tracking_id','grand_total','town','payment_method','order_status');
+
+        if($request->ajax()){
+            $userorders = DataTables::of ($userorders)
+            ->addColumn ('action',function($row){
+                return 
+                '<a href="/admin/viewpayment/'.$row->id.'/'.$row->date_paid.'" target="_blank" alt="View the Payment Receipt" class="btn btn-success viewpaymentreciept" data-id="'.$row->id.'"><i class="fa fa-eye"></i></a>
+                 <a href="/downloadpaymentreceipt/'.$row->id.'/'.$row->date_paid.'" id="downloadpaymentreceipt" alt="Download the Payment Receipt" class="btn btn-danger" data-id="'.$row->id.'"><i class="fa fa-download"></i></a>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+
+            return $userorders;
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *

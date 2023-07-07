@@ -1,12 +1,33 @@
 
+
 $.ajaxSetup({
-    headers:{
-        'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
-    }
+    beforeSend: function(xhr, type) {
+        if (!type.crossDomain) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        }
+    },
+});
+
+$(function(){
+    var navbar = $('.header-inner');
+    $(window).scroll(function(){
+        if($(window).scrollTop() <=40){
+        navbar.removeClass('navbar-scroll');
+        }else{
+        navbar.addClass('navbar-scroll');
+        }
+    });
 });
 
 $(document).ready(function(){
     
+    $(".dropdown").hover(function(){
+        var dropdownMenu = $(this).children(".dropdown-menu");
+        if(dropdownMenu.is(":visible")){
+            dropdownMenu.parent().toggleClass("open");
+        }
+    });
+
     // change price based on the attribute in the product page
     $('#getprice').change(function(){
         var productattr_size=$(this).val();
@@ -44,6 +65,42 @@ $(document).ready(function(){
             
         });
     });
+
+    // add product to cart inthe product's page
+    $("#add_product_to_cart").on('click',function()
+    {
+        var prdid=$("#prod_id").val();
+
+        var prdquantity=$(".quantity").val();
+        var prdctsize=$("#getProductSize").val();
+        
+        if( prdctsize === "" ){
+            alert("Please Select An Attribute For The Product");
+            return false;
+        }
+
+        $.ajax({
+            method:'post',
+            url:'/addtocart',
+            dataType:'json',
+            data:{
+                product_id:prdid,
+                quantity:prdquantity,
+                productsize:prdctsize,
+            },
+            success:function(data){
+                console.log(data);
+                $("#msg").show();
+                $("#msg").addClass("alert alert-warning font-weight-bold").html(data.message);
+                $("#msg").fadeOut(6000);
+
+                $("#cartcount").html(data.itemsincart);
+                
+                // $('#add-to-cart').html(data.message);
+                // $('.showproducts').html(data);
+            }
+        })
+    });
 });
 
 $('.show_confirm').click(function(event) {
@@ -63,7 +120,6 @@ $('.show_confirm').click(function(event) {
     }
     });
 });
-
 
 // select Dynamic dropdown for the shipping counties
 $(document).on('change','.county',function(){
@@ -101,10 +157,19 @@ $(document).on('change','.town',function(){
         dataType:'json',
         success:function(data){
             console.log(data);
-            console.log(data.shipping_charges);
-            $('.total_amount').val(data.shipping_charges);
+            $('.shippingprice_amount').val(data.shipping_charges);
+
+            var total_amount=$('#subtotal').text();
+
+            var shipping_charges=$('#shippingamount').val(data.shipping_charges);
+
             $('.pickup_point').val(data.pickuppoint);
             $('.shipping_amount').html(data.shipping_charges);
+            var coupon_amount=$('.coupon_amount').val();
+
+            var grand_total=parseInt(total_amount)+parseInt(data.shipping_charges)-coupon_amount;
+            //here am displaying the grand_total in the browser
+            $('#grand_total').html(grand_total);
             
         },
         error:function(){
@@ -112,13 +177,7 @@ $(document).on('change','.town',function(){
         }
     });
 
-    var shippingcharges=val((parseFloat($("#shipping_amount").val())));
-    //here am trying to get the subtotal price
-    var sub_total=val((parseFloat($("#sub_total").val())));
-    //here am getting the total price
-    var grand_total=parseInt(sub_total)+parseInt(shippingcharges);
-    //here am displaying the grand_total in the browser
-     $('#grand_total').html("Ksh"+grand_total);
+    
 
 
 });

@@ -18,4 +18,8 @@ class Town extends Model
         $shipping_charges=$shippingdetails['shipping_charges'];
         return $shipping_charges;
     }
+
+    function shippingcounty(){
+        return $this->belongsTo('App\Models\shipping_charge','county_id','id');
+    }
 }

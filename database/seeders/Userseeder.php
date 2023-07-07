@@ -23,7 +23,8 @@ class Userseeder extends Seeder
 
         $superAdmin=User::create([
             // 'username'=>'Super-Admin 1',
-            'name'=>'The Ceo(Super Admin)',
+            'first_name'=>'The Ceo',
+            'last_name'=>'Super Admin',
             'is_admin'=>1,
             'email'=>'super@admin.com',
             'role_id'=>'1',
@@ -34,7 +35,8 @@ class Userseeder extends Seeder
 
         $normalAdmin=User::create([
             // 'username'=>'Normal-Admin 1',
-            'name'=>'General Manager',
+            'first_name'=>'The General Manager',
+            'last_name'=>'Manager',
             'is_admin'=>1,
             'role_id'=>'2',
             'email'=>'manager@admin.com',
@@ -44,7 +46,8 @@ class Userseeder extends Seeder
         ]);
         $normalAdmin2=User::create([
             // 'username'=>'Normal-Admin 1',
-            'name'=>'The Accountant',
+            'first_name'=>'The Accountant',
+            'last_name'=>'Accountant',
             'is_admin'=>1,
             'role_id'=>'3',
             'email'=>'accountant@admin.com',

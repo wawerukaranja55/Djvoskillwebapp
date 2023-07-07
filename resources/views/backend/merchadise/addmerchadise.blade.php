@@ -14,6 +14,60 @@
                 <h3>Merchadise Manager</h3>
             </div>
         </div>
+        {{-- <div class="container">
+            <div class="row shadow mb-5 bg-black rounded">
+              <div class="row">
+                  <div class="col-lg-12 margin-tb">
+                      <div class="pull-right">
+                          <a class="btn btn-success" href="{{ url('admin/merchadise/attributes')}}">Merchadise To Add Attributes</a>
+                      </div>
+                  </div>
+              </div>
+                <div class="col-lg-12">
+                  <div class="panel-heading mt-5" style="text-align: center;"> 
+                      <h3 class="mb-2 panel-title">All Merchadises</h3> 
+                  </div>
+                  <table id="products" class="table table-striped table-bordered nowrap" style="width:100%; border:2px solid black;">
+                      <thead>
+                          <tr>
+                              <th>Id</th>
+                              <th>Name</th>
+                              <th>Category</th>
+                              <th>Image</th>
+                              <th>Code</th>
+                              <th>price</th>
+                              <th>Description</th>
+                              <th>Action</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          @foreach($merchadise as $merch)
+                              <tr>
+                                  <td>{{$merch->id}}</td>
+                                  <td>{{$merch->merch_name}}</td>
+                                  <td>{{$merch->merchadisecategor->merchadisecat_title }}</td>
+                                  <td>
+                                      <?php $product_image_path="images/productimages/small/".$merch->merch_image; ?>
+                                      @if (!empty($merch->merch_image) && file_exists($product_image_path))
+                                          <img src="{{ asset ('images/productimages/small/'.$merch->merch_image) }}" style="width:80px; height:80px;">
+                                      @else
+                                      <img src="{{ asset ('images/productimages/small/'.$merch->merch_image) }}" style="width:80px; height:80px;">
+                                      @endif
+                                  </td>
+                                  <td>{{$merch->merch_code}}</td>
+                                  <td>{{$merch->merch_price}}</td>
+                                  <td>{!!str_limit($merch->merch_details,15)!!}</td>
+                                  <td>
+                                      <a class="btn btn-primary btn-xs" title="Edit the Product Details" href="{{ url('admin/merchadise/'.$merch->id.'/edit')}}"><i class="fa fa-edit"></i></a>
+                                      <a class="btn btn-primary btn-xs" onclick="confirm return('Are you Sure You want to Delete?')" href="{{ url('admin/merchadise/'.$merch->id.'/delete')}}"><i class="fa fa-trash"></i></a>
+                                  </td>
+                              </tr>
+                          @endforeach
+                      </tbody>
+                  </table>
+                </div>
+            </div>
+        </div> --}}
         <!-- end col -->
         
         <div class="col-lg-12 schedule-tab">
@@ -87,7 +141,7 @@
                   </div>
                 </div>
                 <div id="one" class="tab-pane active show fade ">
-                    {{-- Add A merchadise --}}
+                    {{-- {{-- Add A merchadise --}}
                     <div class="container">
                         <section class="panel panel-default">
                             <div class="row">
@@ -211,7 +265,7 @@
                                                 </div>
                                             </div> 
                                         
-                                            {{-- Meta Data --}}
+                                             {{-- Meta Data --}}
                                             <div class="form-group">
                                                 <label for="meta_name" class="control-label">Merchadise Meta_title</label>
                                                 <div class="col-sm-10">
@@ -272,7 +326,7 @@
                                             <h4>Upload Merchadise Video</h4>
                                             <div class="form-group">
                                                 <div class="col-sm-10">
-                                                    <input type="file" name="merch_video" required>
+                                                    <input type="file" name="merch_video">
                                                 </div>
                                             </div>
                                         </div>
