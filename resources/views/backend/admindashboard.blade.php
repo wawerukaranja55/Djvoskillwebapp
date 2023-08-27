@@ -93,10 +93,10 @@
                 <div class="col-lg-12">
                     <div class="ms_heading">
                         <h3>Upcoming Events</h3>
-                        <span class="veiw_all"><a href="{{route ('events.index') }}">View All</a></span>
+                        <span class="veiw_all"><a href="{{route ('admin.events') }}">View All</a></span>
                     </div>
                 </div>
-                @foreach ($events as $event )
+                {{-- @foreach ($events as $event )
                 <div class="col-lg-3 col-md-6">
                     <div class="swiper-slide">
                         <div class="event-feed latest" style="border: 1px solid;
@@ -119,7 +119,7 @@
                         </div><!--\\event-feed latest-->
                     </div>
                 </div>
-                @endforeach
+                @endforeach --}}
                 
             </div>
         </div>

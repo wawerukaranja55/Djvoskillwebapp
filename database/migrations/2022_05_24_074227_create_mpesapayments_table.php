@@ -15,13 +15,19 @@ class CreateMpesapaymentsTable extends Migration
     {
         Schema::create('mpesapayments', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('phone');
-            $table->string('amount');
-            //$table->string('is_paid')->default('partial_paid');
-            $table->string('is_confirmed')->default('not_yet');
-            $table->string('mpesatransaction_id');
+            $table->string('trans_time')->nullable();
+            $table->string('trans_amount')->nullable();
+            $table->string('business_short_code')->nullable();
+            $table->string('bill_ref_number')->nullable();
+            $table->string('invoice_number')->nullable();
+            $table->string('org_account_balance')->nullable();
+            $table->string('third_party_trans_id')->nullable();
+            $table->string('msisdn')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('middle_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('trans_id')->nullable();
+            $table->string('transaction_type')->nullable();
             $table->timestamps();
         });
     }

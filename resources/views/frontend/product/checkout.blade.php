@@ -50,8 +50,12 @@
                                                 <div class="tab-content" id="nav-tabContent">
                                                     <div class="tab-pane fade show active" id="billing-details" role="tabpanel" aria-labelledby="billing_details-tab">
                                                         <div class="row">
-                                                            <div class="col-md-7">
-                                                                <span style="margin:10px;">Already have an account?<a href="#" style="margin-left:10px; ">Login here</a></span>
+                                                            <div class="col-md-12">
+                                                                <div style="margin: 5px auto; text-align:center; padding:5px;">
+                                                                    <span>Returning customer?
+                                                                        <a href="#" id="customer_login_here" style="margin-left:10px; ">Login here</a>
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -681,8 +685,8 @@
                                                     <img class=" img-fluid" style="margin-right: 5px; border-radius:50%;" src="{{ asset ('images/productimages/small/'.$item->product->merch_image) }}" width="62" height="62">
                                                     <div class="media-body my-auto">
                                                         <div class="row ">
-                                                            <div class="col-auto">
-                                                                <p class="mb-0"><b>{{ $item->product->merch_name }}</b></p><small class="text-muted">{{ $item->product->merch_code }}</small>
+                                                            <div class="col-auto">   
+                                                                <p class="mb-0"><b>{!!str_limit($item->product->merch_name,15)!!}</b></p><small class="text-muted">{{ $item->product->merch_code }}</small>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -877,71 +881,71 @@
         var getorder_id =  $('#user_order_id').val();
         
         
-        // submit paypal payment form 
-        // paypal.Buttons({
-        //     style: {
-        //         color: 'gold',
-        //         shape: 'rect',
-        //         label: 'pay',
-        //         layout: 'vertical'
-        //     },
+        //submit paypal payment form 
+        paypal.Buttons({
+            style: {
+                color: 'gold',
+                shape: 'rect',
+                label: 'pay',
+                layout: 'vertical'
+            },
 
-        //     createOrder: function(data, actions) {
-        //         // Set up the transaction details
-        //         return actions.order.create({
-        //             purchase_units: [{
-        //                 amount: {
-        //                     value: paymentamount // Total amount for the order
-        //                 }
-        //             }]
-        //         });
-        //     },
-        //     onApprove: function(data, actions) {
-        //         // Capture the payment
-        //         return actions.order.capture().then(function(details) {
-        //         // Payment successful, execute further actions
+            createOrder: function(data, actions) {
+                // Set up the transaction details
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: paymentamount // Total amount for the order
+                        }
+                    }]
+                });
+            },
+            onApprove: function(data, actions) {
+                // Capture the payment
+                return actions.order.capture().then(function(details) {
+                // Payment successful, execute further actions
 
                 
-        //         $.ajax({
-        //             url:paypal_post_url,
-        //             data:{
-        //                 'email':details.payer.email_address,
-        //                 'amount':details.purchase_units[0].amount.value,
-        //                 'order_id':getorder_id,
-        //                 'paypal_payment_id':details.id,
-        //                 'paypal_payment_status':details.status,
-        //             },
-        //             type:'POST',
-        //             success: function(resp){
-        //                 console.log(resp);
+                $.ajax({
+                    url:paypal_post_url,
+                    data:{
+                        'email':details.payer.email_address,
+                        'amount':details.purchase_units[0].amount.value,
+                        'order_id':getorder_id,
+                        'paypal_payment_id':details.id,
+                        'paypal_payment_status':details.status,
+                    },
+                    type:'POST',
+                    success: function(resp){
+                        console.log(resp);
 
-        //                 if (resp.status==200)
-        //                 {
-        //                     var id = resp.id;
-        //                     var url = "{{ route('userprofile.show', ':id') }}";
-        //                     url = url.replace(':id', id);
-        //                     window.location.href = url;
-        //                     $("#msg").show();
-        //                     $("#msg").addClass("alert alert-warning font-weight-bold").html(resp.message);
-        //                 } 
-        //                 else if (resp.status==500)
-        //                 {
+                        if (resp.status==200)
+                        {
+                            var id = resp.id;
+                            var url = "{{ route('userprofile.show', ':id') }}";
+                            url = url.replace(':id', id);
+                            window.location.href = url;
+                            $("#msg").show();
+                            $("#msg").addClass("alert alert-warning font-weight-bold").html(resp.message);
+                        } 
+                        else if (resp.status==500)
+                        {
                             
-        //                 }
+                        }
                         
-        //             }
-        //             ,error: function(error){
-        //                 console.error(error)
-        //             }
+                    }
+                    ,error: function(error){
+                        console.error(error)
+                    }
                     
-        //          });
-        //         });
-        //     },
-        //     onError: function(error) {
-        //         // Handle any errors
-        //         console.log(error);
-        //     }
-        // }).render('.paypal-button-container');
+                 });
+                });
+            },
+            onError: function(error) {
+                // Handle any errors
+                console.log(error);
+            }
+        }).render('.paypal-button-container');
 
         $(document).ready(function(){
 
@@ -959,7 +963,7 @@
 
                 var copoun_code = $("#couponcode").val();
 
-                if(user == 1)
+                if(user !== 0)
                 {
 
                 } else {
@@ -1048,7 +1052,7 @@
                     data:$("#stripeform").serialize(),
                     success:function(response){
                         console.log(response);
-                        var id=response.id;
+                        var id=response.id.user_id;
                         if (response=="succeeded")
                         {
                             $("#order_paid_msg").show();
@@ -1084,7 +1088,7 @@
                     data:$("#billingform").serialize(),
                     success:function(response){
                         console.log(response);
-                        $("#applycoupon").attr("couponuser", response.towns.user_id);
+                        
                         if (response.status==415)
                         {
                             $('.checkout_errorlist').html(" ");
@@ -1100,6 +1104,8 @@
                         }
                         else if (response.status==200)
                         {
+                            $("#applycoupon").attr("couponuser", response.useraddress.user_id);
+
                             alertify.set('notifier','position', 'top-right');
                             alertify.success(response.message);   
 
@@ -1305,6 +1311,12 @@
             })
 
         });
+
+        $(document).on('click','#customer_login_here',function(e){
+            e.preventDefault();
+
+            $('#LogInModal').modal('show');
+        })
         
     </script>
 @stop

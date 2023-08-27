@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Models\Merchadise;
+use App\Models\Eventstatus;
 use App\Models\Ticketstatus;
 use App\Models\Bookingstatus;
 use App\Models\bookingpackage;
@@ -61,11 +62,11 @@ class DatabaseSeeder extends Seeder
         ]);
         \App\Models\Bookingstatus::factory()->hasbookings(7)->create();
 
-        $this->call([
-            TicketstatusSeeder::class,
-            EventsSeeder::class,
-        ]);
-        \App\Models\Ticketstatus::factory()->hasevents(7)->create();
+        // $this->call([
+        //     TicketstatusSeeder::class,
+        //     EventsSeeder::class,
+        // ]);
+        // \App\Models\Ticketstatus::factory()->hasevents(7)->create();
 
         //Merchadise::factory()->count(50)->create();
 
@@ -83,5 +84,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(TownsSeeder::class);
         
+        $this->call(Event_category_seeder::class);
+
+        $this->call(Eventstatus_seeder::class);
     }
 }

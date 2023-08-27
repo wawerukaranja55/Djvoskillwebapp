@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 // use session;
+use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Town;
 use App\Models\Order;
@@ -11,23 +12,16 @@ use App\Models\Blogtag;
 use App\Models\Blogpost;
 use App\Models\Merchadise;
 use App\Models\Blogcategory;
-use App\Models\Commentreply;
 use App\Models\Mixxes_Model;
 use App\Models\mpesapayment;
 use App\Models\Postcomments;
 use Illuminate\Http\Request;
-use App\Models\Ordersproduct;
-use App\Models\Productimages;
 use App\Models\Deliveryaddress;
 use App\Models\payment_methods;
 use App\Models\shipping_charge;
-use App\Models\Productattribute;
 use App\Models\Merchadisecategory;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -35,7 +29,8 @@ use Illuminate\Support\Facades\Session;
 
 class Home_Controller extends Controller
 {
-    public function homepage () {
+    public function homepage () 
+    {
         $events=Events::latest()->take(4)->get();
         $blog=Blogpost::latest()->take(4)->get();
         $merchad=Merchadise::latest()->take(4)->get();
@@ -64,12 +59,6 @@ class Home_Controller extends Controller
         $posts=Blogpost::orderby('id','asc')->paginate(4);
         
         return view('frontend.blogs.blogs',['events'=>$events,'cats'=>$cats,'posts'=>$posts,'recent_posts'=>$recent_posts,'posttags'=>$posttags]);
-    }
-
-    public function events (){
-        
-        $events=Events::orderby('id','desc')->paginate(4);
-        return view('frontend.events',['events'=>$events]);
     }
    
     public function merchadise (Request $request){
@@ -351,12 +340,26 @@ class Home_Controller extends Controller
             //         'view'=>(string)view::make('frontend.product.cartitems')->with(compact('usercartitems'))
             //     ]);
             // }
+
+            $session_id=Session::get('session_id');
+            if(empty($session_id)){
+                $session_id=Session::getId();
+                Session::put('session_id',$session_id);
+            }
+
+            if(Auth::check()){
+                $user_id=Auth::user()->id;
+            }else{
+                $user_id=0;
+            }
+
                     // increment/decrement cart quantity items
             Cart::where('id',$data['cartid'])->update(['quantity'=>$data['quantity']]);
+            $totalitemsincart=Cart::where('session_id',$session_id)->where('user_id',$user_id)->sum('quantity');
             $cartitems=Cart::usercartitems();
             return response()->json
             (
-                [   
+                [   'totalitemsincart'=>$totalitemsincart,
                     'view'=>(string)view::make('frontend.product.cartitems')->with(compact('cartitems','shippingcharges'))
                 ]
             );

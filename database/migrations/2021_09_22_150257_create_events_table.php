@@ -15,13 +15,18 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('eve_name');
-            $table->string('eve_date');
-            $table->boolean('is_ticket')->default('0'); 
-            $table->string('eve_location');
-            $table->string('eve_time');
-            $table->text('eve_details');
-            $table->string('eve_image');
+            $table->string('event_name');
+            $table->string('event_date');
+            $table->string('event_time');
+            $table->string('event_venue');
+            $table->integer('eventcat_id');
+            $table->string('location_latitude');
+            $table->string('location_longitude');
+            $table->string('is_ticket')->default('no');
+            $table->boolean('is_active')->default('1');
+            $table->string('ticket_link')->nullable(); 
+            $table->string('event_location');
+            $table->string('event_flyer');
             $table->timestamps();
         });
     }

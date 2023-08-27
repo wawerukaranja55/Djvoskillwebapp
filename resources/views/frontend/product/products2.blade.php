@@ -5,6 +5,30 @@ use App\Models\Merchadisecategory;
 @extends('frontend.master')
 @section('title','Our Merchadise')
 @section('content')
+@section('front_merchadisestyles')
+    <style>
+        .left-sidebar{
+            padding: 30px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            overflow-y: scroll;
+            max-height: 100vh;
+            top: 50px; 
+        }
+
+        .content-right{
+            background-color: blueviolet;
+        }
+
+        .left-sidebar-card{
+            padding: 5px;
+        }
+
+        .well-box ul{
+            list-style-type: none;
+        }
+    </style>   
+@stop
 
 @if ($message=Session::get('success'))
     <div class="alert alert-success">
@@ -23,9 +47,9 @@ use App\Models\Merchadisecategory;
     </div>
 
     <div class="row">
-        <div class="col-md-4 right-sidebar">
+        <div class="col-md-3 left-sidebar">
             <!-- right sidebar -->
-            <div class="row">
+            <div class="row left-sidebar-card">
                 <!-- /.widget -->
                 <div class="col-md-12 widget widget-category">
                     <!-- widget -->
@@ -33,22 +57,25 @@ use App\Models\Merchadisecategory;
                         <h4 class="widget-title">Categories</h4>
                         <ul class="listnone angle-double-right">
                             @foreach ( $productcategories as $category)
-                                <li><a href="{{ url('/'.$category->url) }}">{{ $category->merchadisecat_title }}</a> <span>({{ $category->products->count() }})</span></li>
+                                <li>
+                                    <a href="{{ url('/'.$category->url) }}">{{ $category->merchadisecat_title }}</a>
+                                    <span>({{ $category->products->count() }})</span>
+                                </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row left-sidebar-card">
                 <!-- /.widget -->
                 <div class="col-md-12 widget widget-tag">
                     <!-- widget -->
                     <div class="well-box">
                         <div class="col-md-12">
                             <p class="clearfix">
-                                <h4 class="widget-title">Filter Products Based On Prices</h4>
-                                <label for="amount_start">Min Price:<input type="text" id="amount_start" name="start_price" value="0" style="border:0; color:#f6931f; font-weight:bold;"></label>
-                                <label for="amount_end">Max Price:<input type="text" id="amount_end" name="end_price" value="1000" style="border:0; color:#f6931f; font-weight:bold;"></label>
+                                <h4 class="widget-title">Filter by Price</h4>
+                                <label for="amount_start">Min Price:<input type="text" id="amount_start" name="start_price" value="0" readonly style="border:0; color:#f6931f; font-weight:bold; width:50px;"></label>
+                                <label for="amount_end">Max Price:<input type="text" id="amount_end" name="end_price" value="1000" readonly style="border:0; color:#f6931f; font-weight:bold; width:50px;"></label>
                             </p>
                                
                             <div id="slider-range"></div> 
@@ -57,8 +84,8 @@ use App\Models\Merchadisecategory;
                 </div>
                 <!-- /.widget -->
                 <!-- /.widget -->
-                <div class="col-md-12 widget widget-category">
-                    <h4 class="widget-title">Search Product By Filter</h4>
+                <div class="col-md-12 widget well-box">
+                    <h4 class="widget-title" style="text-align: center;">Filter by Type</h4>
                     <!-- widget -->
                     <div class="well-box">
                         <h5 class="widget-title">Fabric</h5>
@@ -88,7 +115,7 @@ use App\Models\Merchadisecategory;
             </div>
         </div>
         <!-- /.right sidebar -->
-        <div class="col-md-8 content-left">
+        <div class="col-md-9 content-right">
             
             <div class="row">
                 <div id="notificdiv"></div>
@@ -97,7 +124,7 @@ use App\Models\Merchadisecategory;
                     <div class="form-group">
                         <form name="sortproducts" id="sortproducts">
                             <input type="text" name="url" id="url" value="{{ $url }}" style="display:none">
-                            <select name="sort" class="sortprods" id="sort">
+                            <select name="sort" class="sortprods frontselect2" id="sort">
                                 <option value="">Default Sorting</option>
                                 <option value="latest_products"
                                     @if (isset($_GET['sort']) && $_GET['sort']=="latest_products")
@@ -137,16 +164,15 @@ use App\Models\Merchadisecategory;
                     <input type="text" id="search_products" style="width:80%;" class="form-control text-light bg-dark float-right" required name="search_products" placeholder="Search for A Product">@csrf
                     <div id="searchedproducts"></div>
                 </div>
+            </div>
 
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div style="
-                                width: 100%;
-                                display: inline-block;
-                                text-align: center;
-                            ">
-                            <h5>{{ $categorydetails['categorydetails']['merchadisecat_title'] }}</h5>
-                        </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div style="width: 100%;
+                    color: white;
+                    display: flex;
+                    justify-content: center;">
+                    <h5>{{ $categorydetails['categorydetails']['merchadisecat_title'] }}</h5>
                     </div>
                 </div>
             </div>

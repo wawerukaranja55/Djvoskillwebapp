@@ -14,7 +14,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\orderscontroller;
 use App\Http\Controllers\Searchcontroller;
 use App\Http\Controllers\Admins_Controller;
-use App\Http\Controllers\Events_Controller;
+use App\Http\Controllers\Front_controllers\Event_Front_Controller;
 use App\Http\Controllers\Address_Controller;
 use App\Http\Controllers\Blogtag_controller;
 use App\Http\Controllers\contact_controller;
@@ -25,16 +25,15 @@ use App\Http\Controllers\Signinup_Controller;
 use App\Http\Controllers\ContactUs_Controller;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\Merchadise_controller;
-use App\Http\Controllers\MpesapaymentController;
+use App\Http\Controllers\MpesaPayment_Controller;
 use App\Http\Controllers\PostComment_controller;
 use App\Http\Controllers\Userprofile_controller;
 use App\Http\Controllers\Blogcategory_Controller;
 use App\Http\Controllers\Order_Controller;
+use App\Http\Controllers\Events_Controller;
 use App\Http\Controllers\Adminsettings_controller;
 use App\Http\Controllers\AdminDashboard_Controller;
 use App\Http\Controllers\Commentreplies_controller;
-use App\Http\Controllers\MerchadiseAttr_controller;
-use App\Http\Controllers\BlogpostComment_controller;
 use App\Http\Controllers\Bookingcategory_controller;
 use App\Http\Controllers\MpesatransactionController;
 use App\Http\Controllers\Merchadisesection_controller;
@@ -100,8 +99,10 @@ Route::get('/home/download/{mix_audio}', [Home_Controller::class,'download']);
 Route::get('/audiomixtapes', [Home_Controller::class,'audiomixtapes'])->name('audiomixtapes');
             
             /*Events Page */
-Route::get('/events', [Home_Controller::class,'events'])->name('events');
-Route::get('event/{slug}/{id}', [Home_Controller::class,'singleevent'])->name('singleevent');
+Route::get('/events', [Event_Front_Controller::class,'events'])->name('events');
+Route::get('get_more_events',[Event_Front_Controller::class,'get_more_events'])->name('events.get-more-events');
+Route::get('/getfirstevents', [Event_Front_Controller::class,'get_first_events'])->name('events.get-first-events');
+Route::get('/getcordsforevent', [Events_Controller::class,'getcords_forid'])->name('admin.getcords'); 
 
             /*Merchadise Page */
 $caturls=Merchadisecategory::select('url')->where('status',1)->get()->pluck('url');
@@ -328,12 +329,34 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
 
     Route::get('/settings', [Adminsettings_controller::class,'settings']);
 
-    Route::resource('events', Events_Controller::class);
 
     Route::resource('mixxes', Mix_Controller::class);
 
     Route::get('/postcomments', [PostComment_controller::class,'index'])->name('allcomments');
 
+    //Manage events routes
+
+    Route::get('/events', [Events_controller::class,'events'])->name('admin.events');
+
+    Route::get('/get_allevents', [Events_controller::class,'getallevents'])->name('admin.getallevents');
+
+    Route::get('/getevents', [Events_controller::class,'getevents'])->name('admin.getevents');
+
+    Route::post('/postevent', [Events_controller::class,'post_event'])->name('admin.postevent');
+
+    Route::get('/getevent', [Events_controller::class,'getevent'])->name('admin.eventdetails');
+
+    Route::get('/get_eventdetails', [Events_controller::class,'geteventdetails'])->name('admin.geteventdetails');
+    
+    Route::get('/editevent', [Events_controller::class,'editevent'])->name('admin.editevent'); 
+
+    Route::get('/deactivateevent', [Events_controller::class,'deactivateevent'])->name('admin.deactivateevent');
+
+    Route::get('/geteventstatus/{id}', [Events_controller::class,'getevent_status'])->name('admin.geteventstatus');
+
+    Route::post('/changeeventstatus', [Events_controller::class,'changeevent_status'])->name('admin.changeeventstatus');
+
+    
                 // Bookings Attributes
 
     Route::get('/bookingsattributes', [Bookingsattributes_controller::class,'index'])->name('bookingattributes');
@@ -360,9 +383,12 @@ Route::group(['prefix'=>'admin','middleware'=>(['auth','Admin'])],function(){
 
     Route::get('/cancelledbookings', [Bookings_controller::class,'cancelledbookings'])->name('cancelledbookings');
 
-            // all mpesa and paypal payments
-    Route::resource('mpesapayments',MpesapaymentController::class);
+            // manage mpesa payments
+    Route::get('mpesapayments',[MpesaPayment_Controller::class,'allmpesapayments'])->name('mpesa_payments');
 
+    Route::get('access_token',[MpesaPayment_Controller::class,'getAccessToken'])->name('get_AccessToken');
+
+    Route::get('register_urls',[MpesaPayment_Controller::class,'registerURLs'])->name('register_URLs');
 });
 
 Route::group(['middleware'=>config('fortify.middleware',['web'])],

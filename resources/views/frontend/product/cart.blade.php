@@ -21,6 +21,7 @@
 
 @section('cartpagescripts')
     <script type="text/javascript">
+
         // update items in the cart page
         $(document).on('click','.itemupdate',function(){
             
@@ -51,6 +52,7 @@
                 type:'post',
                 success:function(resp){
                     console.log(resp);
+                    $("#cartcount").html(resp.totalitemsincart);
                     $("#appendcartitems").html(resp.view);
                 },error:function(){
                     alert("error");

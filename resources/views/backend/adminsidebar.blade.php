@@ -35,7 +35,7 @@
         </a>
       </li>
       <li class="nav-item {{ 'admin/events'==request()->path()?'active':' ' }}">
-        <a class="nav-link" href="{{ route('events.index') }}">
+        <a class="nav-link" href="{{ route('admin.events') }}">
           <i class=" mdi mdi-calendar-clock menu-icon"></i>
           <span class="menu-title">Events</span>
         </a>
@@ -68,7 +68,7 @@
             <li class="nav-item {{ 'admin/merchadise/merchadisesections'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('merchadisesections.index') }}"> All Product Sections</a></li>
             <li class="nav-item {{ 'admin/shippingcharges'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('shippingcharges') }}"> Shipping Charges </a></li>
             <li class="nav-item {{ 'admin/coupons'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('coupons.index') }}"> Coupons For Our Merchadise </a></li>
-            <li class="nav-item {{ 'admin/mpesapayments'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('mpesapayments.index') }}"> Payments Made by Mpesa </a></li>
+            <li class="nav-item {{ 'admin/mpesapayments'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('mpesa_payments') }}"> Payments Made by Mpesa </a></li>
           </ul>
           <ul class="nav flex-column sub-menu">
             <li class="nav-item {{ 'admin/new_orders'==request()->path()?'active':' ' }}"> <a class="nav-link" href="{{ route('orders.new') }}"> New Orders</a></li>

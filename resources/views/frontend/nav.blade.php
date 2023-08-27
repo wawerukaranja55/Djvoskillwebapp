@@ -4,7 +4,7 @@
   $cartcount=Merchadise::cartcount();
 ?>
 
-<header class="header">
+<header class="header" style="z-index:999;">
   <div class="header-inner" style="background:rgb(224, 210, 13);">
       <div class="container-fluid px-lg-5">
           <nav class="navbar navbar-expand-lg my-navbar">

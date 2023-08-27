@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\DeleteUnplacedOrders::class,
+        Commands\UpdateEventStatusHappeningToday::class,
     ];
 
     /**
@@ -24,7 +25,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+
+        $schedule->command('eventstatus:done')
+        ->dailyAt('23:50');
+
+        $schedule->command('eventstatus:happeningtoday')
+        ->daily();
+
+        $schedule->command('unplacedorder:delete')
+        ->daily();
     }
 
     /**

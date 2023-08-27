@@ -20,6 +20,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+    // pay with mpesa
+Route::group(['prefix' => 'c2b', 'as' => 'c2b.'], function () {
+    Route::post('confirm', [MpesaPayment_Controller::class,'confirmTrsction'])->name('confirm');
+    Route::post('validate', [MpesaPayment_Controller::class,'validateTrsction'])->name('validate');
+}); 
+
     // pay with stripe
 Route::post('/stripe/postpay_ment', [Order_Controller::class,'stripepayment'])->name('stripe-payment');
 

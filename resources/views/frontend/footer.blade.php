@@ -120,13 +120,13 @@
           <div class="col-lg-6 col-md-6 mb-4 mb-md-0">
             <h5 class="text-uppercase">Upcoming Events</h5>
   
-            <ul class="list-unstyled mb-0">
+            {{-- <ul class="list-unstyled mb-0">
               @foreach ($events as $event)
                 <li>
                   <a href="{{route ('events') }}" class="text-white">{{ $event->eve_name }}</a>
                 </li>
               @endforeach
-            </ul>
+            </ul> --}}
           </div>
           <!--Grid column-->
           

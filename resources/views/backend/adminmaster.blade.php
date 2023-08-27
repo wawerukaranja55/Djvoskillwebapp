@@ -3,13 +3,16 @@
 
 <head>
       <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">  
 
   <title>
     @yield('title','Admin Layout')
   </title>
   <!-- plugins:css -->
+  
 
   <link rel="stylesheet" href="{{ asset('dist/backend/vendors/mdi/css/materialdesignicons.min.css') }}">
 
@@ -53,11 +56,26 @@
 
   <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/bootstrap-togglemin/bootstrap-toggle.css') }}"/>
 
+  {{-- leaflet.js openstreet --}}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-geosearch@3.1.0/dist/geosearch.css"/>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+   {{-- <link rel="stylesheet" href="{{ asset('assets/adminpanel/leaflet/1.9.4_dist_leaflet.css') }}"/> --}}
+
+  {{-- bootstrap date picker --}}
+  <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css') }}"/>
+
+  {{-- bootstrap time picker --}}
+  <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/timepicker/timepicker.min.css') }}"/>
+
   <!-- endinject -->
   <link rel="icon" type="image/png" href="{{ asset('dist/backend/adminimages/DjVoskillLogo.jpg') }}">
   
   @yield('order_intransitstyles')
-  
+  @yield('admin_eventsstyles')
+
 </head>
 <body>
   <div class="container-scroller">
@@ -301,6 +319,60 @@
     </div>
   </div>
 
+  {{-- change event status --}}
+  <div class="modal fade" id="changeeventstatusmodal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center;">
+              <h5 class="modal-title">Change Event Status</h5>
+            </div>
+            <div class="modal-body">
+              <div class="card padding-card product-card" style="margin-top:20px;">
+                <form method="post" id="changeeventstatusform" role="form">
+                    @csrf
+                    <input type="hidden" name="event_status_id" id="event_status_id">
+                    
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-md-12">
+                          <div class="checkout-form-list" style="text-align: center;">
+                              <label>Event Name</label>
+                              <input id="event_status_name" style="text-align: center;" class="form-control input-md" readonly/>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-md-12">
+                          <div class="checkout-form-list" style="text-align: center;">
+                              <label>Event Date</label>
+                              <input id="event_status_date" style="text-align: center;" class="form-control input-md" readonly/>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="row" style="margin-top:10px;">
+                      <div class="col-md-12">
+                          <div class="checkout-form-list">
+                              <label>Change Event Status</label>
+                              <select id="eventstatus" class="form-control adminselect2" required name="eventstatus" style="width: 100%;">
+                                <option value=" " disabled="true">Update Event Status</option>
+                              </select>
+                          </div>
+                      </div>
+                    </div>
+                    
+                    <ul class="alert alert-warning d-none checkout_errorlist"></ul>
+                    <div class="modal-footer" style="margin-top:10px;">
+                        <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                        <button type="submit" id="change_status" class="btn btn-dark">Submit</button>
+                    </div>
+                </form>
+              </div>
+            </div> 
+      </div>
+    </div>
+  </div>
+
   {{-- <script src="{{ asset('assets/frontuser/js/jquery-3.5.1.js') }}"></script> --}}
   <script src="{{ asset('assets/frontuser/js/jquery-3.5.1.js') }}"></script>
   <script type="text/javascript" src="{{ asset('assets/frontuser/bootstrap/bootstrap.bundle.min.js')}}"></script>
@@ -352,9 +424,29 @@
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
 
+  {{-- leaflet js  --}}
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet-geosearch@3.1.0/dist/bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  {{-- <script src="{{ asset( 'assets/adminpanel/leaflet/1.9.4_dist_leaflet.js') }}"></script>  --}}
+
+  {{-- bootsrap date picker --}}
+  <script src="{{ asset('assets/adminpanel/js/moment/moment.min.js') }}"></script>
+  <script src="{{ asset('assets/adminpanel/js/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js') }}"></script>
+
+  {{-- bootsrap time picker --}}
+  <script src="{{ asset('assets/adminpanel/js/timepicker/timepicker.min.js') }}"></script>
+
+  {{-- sweet alert --}}
+  <script src="{{ asset('assets/adminpanel/js/sweetalert2/sweetalert2@10.16.6_dist_sweetalert2.all.min.js') }}"></script>
+
 @yield('viewshippingscript')
 
 @yield('adminordersscript')
+
+@yield('admineventsscript')
+
+@yield('mpesapaymentsscript')
       
 @section('scripts')
 <script>	
@@ -423,6 +515,14 @@
             $('#recipient_lastname').val('');
             $('#recipient_id_number').val('');
             $('#recipient_phone').val('');
+        });
+
+        // empty status modal on closing it
+        $("#changeeventstatusmodal").on('hide.bs.modal', function(){
+          $('#event_status_id').val('');
+          $('#event_status_name').val('');
+          $('#event_status_date').val('');
+          $('#eventstatus').html('');
         });
     });
 

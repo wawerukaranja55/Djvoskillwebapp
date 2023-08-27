@@ -252,13 +252,15 @@ class Order_Controller extends Controller
                 'description' => $request->stripe_description,
             ]);
 
+            $userid=Order::where(['id'=>$request->input('stripe_orderid')])->select('user_id')->first();
+
             Order::where(['id'=>$request->input('stripe_orderid')])->update(['order_status'=>'Paid']);
 
             Cart::where(['order_id'=>$request->input('stripe_orderid')])->delete();
 
             return response()->json([
                 'status'=>201,
-                'id'=>Auth::user()->id,
+                'id'=>$userid,
                 'message'=>"Your Stripe Payment for the order " .$request->input('order_id'). " has been received.Kindly check your email and account to see the order progress",
             ]);
         }

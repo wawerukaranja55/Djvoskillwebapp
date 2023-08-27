@@ -16,17 +16,90 @@
 
 <div class="row">
     @if ($productscategory->isEmpty())
-        No Products Found At the Moment
+        <div class="row">
+            <div class="col-md-12">
+                <div style="width: 100%;
+                padding:50%;
+                color: white;
+                display: flex;
+                justify-content: center;">
+                <h5>No Products Found At the Moment</h5>
+                </div>
+            </div>
+        </div>
     @else 
         @foreach ($productscategory as $product)
+        <div class="col-md-4 col-sm-6 px-2 mb-4">
+            <div class="card product-card">
+                <span class="badge bg-danger badge-shadow">Featured</span>
+                <button class="btn-wishlist btn-sm" type="button" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist">
+                    <i class="ci-heart"></i>
+                </button>
+                <a class="card-img-top d-block overflow-hidden" href="shop-single-v1.html">
+                    <img src="img/shop/catalog/02.jpg" alt="Product">
+                </a>
+              <div class="card-body py-2">
+                <a class="product-meta d-block fs-xs pb-1" href="#">Women’s T-shirt</a>
+                <h3 class="product-title fs-sm">
+                    <a href="shop-single-v1.html">Cotton Lace Blouse</a>
+                </h3>
+                <div class="d-flex justify-content-between">
+                  <div class="product-price">
+                    <span class="text-accent">$28.<small>50</small></span>
+                    <del class="fs-sm text-muted">38.<small>50</small></del>
+                  </div>
+                  {{-- <div class="star-rating"><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-filled active"></i><i class="star-rating-icon ci-star-half active"></i><i class="star-rating-icon ci-star"></i>
+                  </div> --}}
+                </div>
+              </div>
+              <div class="card-body card-body-hidden">
+                {{-- for showing colours --}}
+                <div class="text-center pb-2">
+                  <div class="form-check form-option form-check-inline mb-2">
+                    <input class="form-check-input" type="radio" name="color1" id="white" checked>
+                    <label class="form-option-label rounded-circle" for="white"><span class="form-option-color rounded-circle" style="background-color: #eaeaeb;"></span></label>
+                  </div>
+                  <div class="form-check form-option form-check-inline mb-2">
+                    <input class="form-check-input" type="radio" name="color1" id="blue">
+                    <label class="form-option-label rounded-circle" for="blue"><span class="form-option-color rounded-circle" style="background-color: #d1dceb;"></span></label>
+                  </div>
+                  <div class="form-check form-option form-check-inline mb-2">
+                    <input class="form-check-input" type="radio" name="color1" id="yellow">
+                    <label class="form-option-label rounded-circle" for="yellow"><span class="form-option-color rounded-circle" style="background-color: #f4e6a2;"></span></label>
+                  </div>
+                  <div class="form-check form-option form-check-inline mb-2">
+                    <input class="form-check-input" type="radio" name="color1" id="pink">
+                    <label class="form-option-label rounded-circle" for="pink"><span class="form-option-color rounded-circle" style="background-color: #f3dcff;"></span></label>
+                  </div>
+                </div>
+
+                {{-- for showing sizes --}}
+                <div class="d-flex mb-2">
+                  <select class="form-select form-select-sm me-2">
+                    <option>XS</option>
+                    <option>S</option>
+                    <option>M</option>
+                    <option>L</option>
+                    <option>XL</option>
+                  </select>
+                  <button class="btn btn-primary btn-sm" type="button"><i class="ci-cart fs-sm me-1"></i>Add to Cart</button>
+                </div>
+                <div class="text-center"><a class="nav-link-style fs-ms" href="#quick-view" data-bs-toggle="modal"><i class="ci-eye align-middle me-1"></i>Quick view</a></div>
+              </div>
+            </div>
+            <hr class="d-sm-none">
+          </div>
+
+
+
             <div class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1 mb-5">
                 <div class="card"> 
-                    <img class="card-img-top" src="{{ asset ('images/productimages/small/'.$product->merch_image) }}">
+                    <img class="card-img-top" alt="{{ $product->merch_name }}" src="{{ asset ('images/productimages/small/'.$product->merch_image) }}">
                     <div class="card-body">
-                        <h6 class="font-weight-bold pt-1">{{ $product->id }}.{{ $product->merch_name }}</h6>
-                        <div class="d-flex align-content-center justify-content-center">
+                        <h6 class="font-weight-bold pt-1">{{ $product->merch_name }}</h6>
+                        {{-- <div class="d-flex align-content-center justify-content-center">
                             <span class="pt-1">{{ $product->merchadisecategor->merchadisecat_title }}</span>
-                        </div>
+                        </div> --}}
                         <span class="pt-1">{{ $product->fabric }}</span>
                         <hr>
                         <span class="pt-1">{{ $product->occasion }}</span>

@@ -34,33 +34,33 @@
                                     
                         ?>
                     @endif
-                    <td>{{ $item->product->merch_name }}</td>
+                    <td style="width: 150px;">{{ $item->product->merch_name }}</td>
                     @if ($item->product->is_attribute=="1")
-                        <td>{{ $attrpric['merch_price'] }}</td>
+                        <td style="width: 100px;">{{ $attrpric['merch_price'] }}</td>
                     @else
-                        <td>{{ $item->product->merch_price }}</td>
+                        <td style="width: 100px;">{{ $item->product->merch_price }}</td>
                     @endif
-                    
-                    <td>
-                        <img src="{{ asset ('images/productimages/small/'.$item->product->merch_image) }}" style="width:100px; height:100px;" alt="Product">
+                    <td style="width: 100px;">
+                        <img src="{{ asset ('images/productimages/medium/'.$item->product->merch_image) }}" style="width:100px; height:100px;" alt="{{ $item->product->merch_name }}">
                     </td>
-                    <td>
+                    <td style="width: 150px;">
                         <button class="itemupdate qtyminus" type="button" data-cartid="{{ $item->id }}">
                             <i class="fa fa-minus" aria-hidden="true"></i>
                         </button>
-                        <input data-id={{ $item->id }} class="quantity" min="1" name="quantity[]" value="{{ $item->quantity }}" type="number" readonly>
+                        <input data-id={{ $item->id }} class="quantity" style="width:40px; text-align:center;" min="1" name="quantity[]" value="{{ $item->quantity }}" type="number" readonly>
                         <button class="itemupdate qtyplus" type="button" data-cartid="{{ $item->id }}">
                             <i class="fa fa-plus" aria-hidden="true"></i>
                         </button>
                     </td>
-                    @if ($item->product->is_attribute==1)<td>sh.{{ $attrpric['discount'] * $item['quantity'] }}</td>
-                        <td>sh.{{ $attrpric['final_price'] * $item['quantity'] }}</td>
+                    @if ($item->product->is_attribute==1)
+                        <td style="width: 100px;">sh.{{ $attrpric['discount'] * $item['quantity'] }}</td>
+                        <td style="width: 100px;">sh.{{ $attrpric['final_price'] * $item['quantity'] }}</td>
                     @elseif($item->product->is_attribute==0)
                         
-                        <td>{{ ($item->product->merch_price-$discountedprice) * $item['quantity'] }}</td>
-                        <td>{{ $discountedprice * $item['quantity'] }}</td>
+                        <td style="width: 100px;">{{ ($item->product->merch_price-$discountedprice) * $item['quantity'] }}</td>
+                        <td style="width: 100px;">{{ $discountedprice * $item['quantity'] }}</td>
                     @endif
-                    <td>
+                    <td style="width: 150px;">
                         <a class="btn btn-primary btn-xs" onclick="confirm return('Are you Sure You want to Delete?')" href="{{ route('deletecartitem', $item->id) }}"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>

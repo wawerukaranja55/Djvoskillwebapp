@@ -10,9 +10,14 @@ class Events extends Model
 {
     use HasFactory;
 
-    protected $fillable=['eve_name','eve_date','is_ticket','eve_location','eve_time','eve_details','eve_image'];
+    protected $fillable=['event_name','location_latitude','location_longitude','event_venue','eventcat_id','event_date','is_ticket','event_location','event_time','event_flyer'];
 
-    public function ticketstatus(){
-        return $this->belongsToMany(Ticketstatus::class);
+    public function eventcategory(){
+        return $this->belongsTo('App\Models\Event_category','eventcat_id','id');
     }
+
+    public function event_statuses(){
+        return $this->belongsToMany('App\Models\Eventstatus','event_status','event_id','status_id');
+    }
+
 }
