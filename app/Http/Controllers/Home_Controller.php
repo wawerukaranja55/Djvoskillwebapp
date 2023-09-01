@@ -200,7 +200,7 @@ class Home_Controller extends Controller
     public function singleproduct ($product_slug,$id){
 
         $singleproduct=Merchadise::with('merchadisecategor')->find($id);
-        // dd($singleproduct);die();
+        //dd($singleproduct);die();
         Merchadise::find($id)->increment('product_views');
         $events=Events::latest()->take(4)->get();
         return view('frontend.product.singleproduct',compact('events','singleproduct'));
@@ -238,13 +238,15 @@ class Home_Controller extends Controller
                     $user_id=0;
                 }
 
+                $phone = str_replace('sh:', '', $data['productprice']);
+                
                 $newcart = new Cart();
                 $newcart->session_id = $session_id;
                 $newcart->product_id =$data['product_id'];
                 $newcart->size = $data['productattrsize'];
                 $newcart->user_id=$user_id;
                 $newcart->quantity = $data['quantity'];
-                $newcart->product_price =$data['productprice'];
+                $newcart->product_price =$phone;
                 $newcart->save();
 
                 $itemsincart=Cart::where('session_id',$session_id)->where('user_id',$user_id)->sum('quantity');

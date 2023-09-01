@@ -22,7 +22,7 @@ class MerchadiseFactory extends Factory
     public function definition()
     {
         return [
-            $merchnme='merch_name'=>$this->faker->unique(5)->company(),
+            $merchnme='merch_name'=>$this->faker->unique(5)->name(),
             'url'=>$this->faker->unique(5)->company(),
             'merch_code'=>$this->faker->numerify('merch-####'),
             'merch_price'=>$this->faker->numberBetween(100, 150),

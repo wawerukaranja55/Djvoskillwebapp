@@ -52,9 +52,17 @@
     {{-- select2 --}}
     <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/select2/select2.min.css') }}"/>
 
+    {{-- fontawesome --}}
+    <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/font-awesome/font-awesome_6.4.2_css_all.min.css') }}"/>
+
+
     {{-- alertify --}}
     <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/alertifyjs/css/alertify.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/alertifyjs/css/themes/default.min.css') }}"/>
+
+    {{-- sweet alert --}}
+    <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/sweetalert2/sweetalert2@10.10.1_dist_sweetalert2.min.css') }}"/>
+
 
         {{-- css for datatables --}}
     <link rel="stylesheet" href="{{ asset('assets/adminpanel/js/datatables/DataTables-1.10.25/css/jquery.dataTables.min.css') }}"/>
@@ -75,6 +83,9 @@
     @yield('front_eventsstyles')
 
     @yield('front_merchadisestyles')
+
+    @yield('front_singleproductstyles')
+    
     <style>
         /* input error */
         form.cmxform label.error, label.error {
@@ -332,11 +343,17 @@
 {{-- select2 --}}
 <script src="{{ asset('assets/adminpanel/js/select2/select2.min.js') }}"></script>
 
+{{-- font-awesome --}}
+<script src="{{ asset('assets/adminpanel/js/font-awesome/font-awesome_6.4.2_js_all.min.js') }}"></script>
+
 {{-- alertify --}}
 <script src="{{ asset('assets/adminpanel/js/alertifyjs/alertify.min.js') }}"></script>
 
-{{-- // JS Library by CXDI --}}
+{{-- sweetalert --}}
+<script src="{{ asset('assets/adminpanel/js/sweetalert2/sweetalert2@10.16.6_dist_sweetalert2.all.min.js') }}"></script>
 
+
+{{-- // JS Library by CXDI --}}
 <script src="https://cdn.jsdelivr.net/gh/CDNSFree/mediaelement@latest/mediaelement.js"></script>
 
 {{-- datatables --}}
@@ -475,6 +492,8 @@
 @yield('checkoutscript')
 
 @yield('userprofilescript')
+
+@yield('singleproductpagescripts')
 
 @section('scripts')
     <script>

@@ -176,28 +176,15 @@
                                                             value="{{ old('merch_name') }}"
                                                         @endif>
                                                 </div>
-                                                <div class="form-group col-sm-6">
-                                                    <label for="url" class=" control-label">Merchadise url</label>
-                                                    <input type="text" class="form-control text-white bg-dark" required name="url" id="url" placeholder="Write The Merchadise url"
-                                                        @if (!empty($merchadise->url))
-                                                            value="{{ $merchadise->url }}"
-                                                        @else
-                                                            value="{{ old('url') }}"
-                                                        @endif>
-                                                </div>
-                                            </div>
-        
-                                            <div class="form-group">
-                                                <label for="merch_code" class=" control-label">Merchadise Code</label>
-                                                <div class="col-sm-10">
+                                                <div class="form-group col-md-6">
+                                                    <label for="merch_code" class=" control-label">Merchadise Code</label>
                                                     <input type="text" class="form-control text-white bg-dark" required name="merch_code" id="merch_code" placeholder="Write The Merchadise Code">
                                                 </div>
                                             </div>
-        
-                                            <!-- form-group // -->
-                                            <div class="form-group">
-                                                <label for="FormControlSelect" class=" control-label">Merchadise Category</label>
-                                                <div class="col-sm-10">
+
+                                            <div class="row col-md-10">
+                                                <div class="form-group col-sm-6">
+                                                    <label for="FormControlSelect" class=" control-label">Merchadise Category</label>
                                                     <select name="merchadisecategory" class="form-control text-white bg-dark">
                                                         <option>Choose a Merchadise category</option>
                                                         @foreach($merchadisecats as $merchCategory)
@@ -207,6 +194,10 @@
                                                                 @endif>{{ $merchCategory->merchadisecat_title }}</option>
                                                         @endforeach
                                                     </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="stock" class=" control-label">Merchadise Stock</label>
+                                                    <input type="number" class="form-control text-white bg-dark" required name="stock" id="stock" placeholder="Write the Merchadise Stock">
                                                 </div>
                                             </div>
         
@@ -218,16 +209,8 @@
                                     
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label for="stock" class=" control-label">Merchadise Stock</label>
-                                                    <input type="number" class="form-control text-white bg-dark" required name="stock" id="stock" placeholder="Write the Merchadise Stock">
-                                                </div>
-                                            </div>
-                                            
-                                            <!-- form-group // -->
-                                            <div class="form-group">
-                                                <label for="product_discount" class=" control-label">Merchadise Discount</label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control text-white bg-dark" name="product_discount" id="product_discount" placeholder="Write the Product Discount">
+                                                    <label for="product_discount" class=" control-label">Merchadise Discount</label>
+                                                    <input type="number" class="form-control text-white bg-dark" name="product_discount" id="product_discount" value="0">
                                                 </div>
                                             </div>
         
@@ -321,6 +304,16 @@
                                                 </div>
                                                 <span class="font-italic">Recommended size:width  1040px by height 1200px</span>
                                             </div>
+
+                                            <h4>Upload More Merchadise Images</h4>
+                                            {{-- <div class="form-group">
+                                                <div class="col-sm-10">
+                                                    <form id="dropzone-form" action="{{ url('admin/alternateimages/'.$rentaldata->id) }}" class="dropzone form-horizontal" role="form" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                    </form>
+                                                </div>
+                                                <span class="font-italic">Recommended size:width  1040px by height 1200px</span>
+                                            </div> --}}
 
                                             <!-- form-group // -->
                                             <h4>Upload Merchadise Video</h4>

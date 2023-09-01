@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Town;
 use App\Models\coupon;
 use App\Models\Merchadise;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Productimages;
 use App\Models\shipping_charge;
@@ -69,8 +70,7 @@ class Merchadise_controller extends Controller
     
     public function store(Request $request)
     {
-        if($request->isMethod('post')){
-            $data=$request->all();
+        $data=$request->all();
             $rules=[
                 'merch_name'=>'required',
                 'merch_code'=>'required',
@@ -156,9 +156,11 @@ class Merchadise_controller extends Controller
                 $video_name="";
             }
 
+            $product_slug=str_replace(' ', '_', $data['merch_name']);
+
             $merchadise=new Merchadise();
             $merchadise->merch_name=$data['merch_name'];
-            $merchadise->url=$data['url'];
+            $merchadise->url=Str::lower($product_slug);
             $merchadise->merch_code=$data['merch_code'];
             $merchadise->merch_price=$data['merch_price'];
             $merchadise->stock=$data['stock'];
@@ -182,7 +184,6 @@ class Merchadise_controller extends Controller
             }elseif($isattribute==1){
                 return redirect('admin/merchadise/attributes')->with('success','Merchadise has been added Successfully.Kindly fill the Merchadise attributes');
             }
-        }
     }
 
     /**
@@ -293,7 +294,7 @@ class Merchadise_controller extends Controller
 
                 $videotmp->move($video_path,$video_name);
             } else {
-                $video_name=$request->merch_video;
+                $video_name="";
             }
 
             $merchadise=Merchadise::find($id);

@@ -6,8 +6,7 @@
       <section class="mb-4">
         <!-- Facebook -->
         <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/https://www.facebook.com/" role="button"
-          ><i class="fab fa-facebook-f"></i
-        ></a>
+          ><i class="fab fa-facebook-f"></i></a>
   
         <!-- Twitter -->
         <a class="btn btn-outline-light btn-floating m-1" href="https://www.facebook.com/https://www.facebook.com/" role="button"

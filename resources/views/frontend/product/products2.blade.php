@@ -17,7 +17,7 @@ use App\Models\Merchadisecategory;
         }
 
         .content-right{
-            background-color: blueviolet;
+            background-color: none;
         }
 
         .left-sidebar-card{
@@ -26,6 +26,65 @@ use App\Models\Merchadisecategory;
 
         .well-box ul{
             list-style-type: none;
+        }
+
+        .form-option.form-check-inline {
+            margin-right: 0.25rem;
+        }
+
+        .form-option {
+            padding-left: 0;
+        }
+
+        .product-size-div{
+            display: none;
+            transition: ease-in-out 5s;
+            background-color:rgb(241, 248, 248);
+        }
+
+        .product-card:hover .product-size-div{
+            display: block;
+        }
+
+        .product-title a {
+            font-size: 17px;
+        }
+
+        .form-check-input {
+            width: 1.3em;
+            height: 1.3em;
+            background-color: rgb(250, 249, 249);
+            border-radius: 50%;
+            vertical-align: middle;
+            border: 2px solid #ec2de3;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            border: 2px solid #e0dd10;
+            background: rgb(10, 10, 10);
+        }
+
+        .form-select{
+            width: 70px;
+            margin-left: 1px !important;
+        }
+
+        a{
+            font-weight: 600;
+            color: rgb(0, 0, 0);
+        }
+
+        .product-meta {
+            font-size: 13px;
+            text-align: center;
+        }
+
+        a:hover{
+            text-decoration: none;
         }
     </style>   
 @stop
@@ -124,7 +183,7 @@ use App\Models\Merchadisecategory;
                     <div class="form-group">
                         <form name="sortproducts" id="sortproducts">
                             <input type="text" name="url" id="url" value="{{ $url }}" style="display:none">
-                            <select name="sort" class="sortprods frontselect2" id="sort">
+                            <select name="sort" class="sortprods" style="width: 100%;" id="sort">
                                 <option value="">Default Sorting</option>
                                 <option value="latest_products"
                                     @if (isset($_GET['sort']) && $_GET['sort']=="latest_products")
@@ -166,10 +225,10 @@ use App\Models\Merchadisecategory;
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-top:2px;">
                 <div class="col-md-12">
                     <div style="width: 100%;
-                    color: white;
+                    color: rgb(7, 6, 6);
                     display: flex;
                     justify-content: center;">
                     <h5>{{ $categorydetails['categorydetails']['merchadisecat_title'] }}</h5>
@@ -187,6 +246,9 @@ use App\Models\Merchadisecategory;
 @section('listingpagescripts')
     <script type="text/javascript">
         $(document).ready(function(){
+
+            $('#sort').select2();
+
             // live search products and show the products as a list the redirect to the product page
             $('#search_products').keyup(function(){
                 var query=$(this).val();
@@ -416,6 +478,8 @@ use App\Models\Merchadisecategory;
                         if( resp['final_price'] !=null){
                         
                             $("#showcalculatedattrprice"+productid).html(`sh:${  resp['final_price']}`);
+                            $("#product_merch_price"+productid).html(`sh:${  resp['merch_price']}`);
+                            
                         }
                         if( resp['merch_price']!=null){
                         
@@ -439,7 +503,7 @@ use App\Models\Merchadisecategory;
                 var prdquantity=$("#prod_qty"+prdid).val();
                 var prdctsize=$("#productsize"+prdid).val();
 
-                if( prdctsize === "" ){
+                if( prdctsize === null ){
                     alert("Please Select An Attribute For The Product");
                     return false;
                 }
@@ -456,9 +520,22 @@ use App\Models\Merchadisecategory;
                     },
                     success:function(data){
                         console.log(data);
-                        $("#msg"+prdid).show();
-                        $("#msg"+prdid).addClass("alert alert-warning font-weight-bold").html(data.message);
-                        $("#msg"+prdid).fadeOut(6000);
+
+                        swal.fire({
+                            title: data.message,
+                            showClass: {
+                                popup: 'animate__fadeOutDown'
+                            },
+                            hideClass: {
+                                popup: 'animate__fadeOutUpBig'
+                            },
+                            timer:3000
+                        });
+                        
+
+                        // $("#msg"+prdid).show();
+                        // $("#msg"+prdid).addClass("alert alert-warning font-weight-bold").html(data.message);
+                        // $("#msg"+prdid).fadeOut(6000);
 
                         $("#cartcount").html(data.itemsincart);
                         
